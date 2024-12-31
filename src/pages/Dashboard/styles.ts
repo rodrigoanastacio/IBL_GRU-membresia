@@ -1,10 +1,17 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const spin = keyframes`
+  to { transform: rotate(360deg); }
+`;
 
 export const Container = styled.div`
   padding: 2rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
 `;
 
 export const Header = styled.div`
@@ -15,10 +22,15 @@ export const Header = styled.div`
 `;
 
 export const Title = styled.h1`
-  font-size: 1.5rem;
+  font-size: 1.875rem;
   font-weight: 600;
   color: #111827;
   margin: 0;
+`;
+
+export const Subtitle = styled.p`
+  color: #6b7280;
+  margin: 0.25rem 0 0 0;
 `;
 
 export const SearchContainer = styled.div`
@@ -26,16 +38,16 @@ export const SearchContainer = styled.div`
   align-items: center;
   gap: 0.5rem;
   background-color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
   border: 1px solid #e5e7eb;
   width: 100%;
   max-width: 400px;
-  color: #6b7280;
+  transition: all 0.2s;
 
   &:focus-within {
     border-color: #2563eb;
-    box-shadow: 0 0 0 1px #2563eb;
+    box-shadow: 0 0 0 2px #bfdbfe;
   }
 `;
 
@@ -51,24 +63,45 @@ export const SearchInput = styled.input`
   }
 `;
 
-export const DashboardGrid = styled.div`
+export const StatsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
   width: 100%;
+`;
+
+export const TableContainer = styled.div`
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  overflow: hidden;
+`;
+
+export const TableHeader = styled.div`
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+`;
+
+export const TableTitle = styled.h2`
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+`;
+
+export const TableDescription = styled.p`
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin: 0.25rem 0 0 0;
 `;
 
 export const Table = styled.table`
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  background-color: white;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
 
   th, td {
-    padding: 0.75rem 1rem;
+    padding: 1rem 1.5rem;
     text-align: left;
     border-bottom: 1px solid #e5e7eb;
   }
@@ -78,6 +111,7 @@ export const Table = styled.table`
     font-weight: 500;
     color: #374151;
     font-size: 0.875rem;
+    white-space: nowrap;
   }
 
   td {
@@ -94,6 +128,43 @@ export const Table = styled.table`
   }
 `;
 
+export const MemberName = styled.div`
+  font-weight: 500;
+  color: #111827;
+`;
+
+interface StatusBadgeProps {
+  active: boolean;
+}
+
+export const StatusBadge = styled.span<StatusBadgeProps>`
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: ${({ active }) => active ? '#dcfce7' : '#fee2e2'};
+  color: ${({ active }) => active ? '#16a34a' : '#dc2626'};
+`;
+
+export const DocumentBadges = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+`;
+
+export const DocumentBadge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: #e0f2fe;
+  color: #0284c7;
+`;
+
 export const ActionButton = styled.button`
   background: none;
   border: none;
@@ -103,7 +174,7 @@ export const ActionButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0.375rem;
+  border-radius: 0.5rem;
   transition: all 0.2s;
 
   &:hover {
@@ -117,12 +188,14 @@ export const Pagination = styled.div`
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  padding: 1.5rem;
+  border-top: 1px solid #e5e7eb;
 `;
 
 export const PaginationButton = styled.button<{ disabled?: boolean }>`
-  background: none;
+  background: white;
   border: 1px solid #e5e7eb;
-  border-radius: 0.375rem;
+  border-radius: 0.5rem;
   padding: 0.5rem;
   display: flex;
   align-items: center;
@@ -142,78 +215,28 @@ export const PageInfo = styled.span`
   color: #374151;
 `;
 
-export const LoadingMessage = styled.div`
-  text-align: center;
-  padding: 2rem;
-  color: #6b7280;
-  font-size: 0.875rem;
-`;
-
-export const Modal = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+export const LoadingContainer = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
-  z-index: 1000;
-`;
-
-export const ModalContent = styled.div`
+  gap: 1rem;
+  padding: 4rem;
   background-color: white;
-  border-radius: 0.5rem;
-  width: 100%;
-  max-width: 600px;
-  max-height: 90vh;
-  overflow-y: auto;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
 `;
 
-export const ModalHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  border-bottom: 1px solid #e5e7eb;
-
-  h2 {
-    font-size: 1.25rem;
-    color: #1f2937;
-  }
+export const LoadingSpinner = styled.div`
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: ${spin} 0.6s linear infinite;
 `;
 
-export const ModalBody = styled.div`
-  padding: 1.5rem;
-`;
-
-export const CloseButton = styled.button`
-  background: none;
-  border: none;
-  font-size: 1.5rem;
+export const LoadingMessage = styled.div`
   color: #6b7280;
-  cursor: pointer;
-  padding: 0.25rem;
-  line-height: 1;
-
-  &:hover {
-    color: #1f2937;
-  }
-`;
-
-export const DetailGroup = styled.div`
-  margin-bottom: 1rem;
-`;
-
-export const DetailLabel = styled.div`
-  font-weight: 600;
-  color: #374151;
   font-size: 0.875rem;
-  margin-bottom: 0.25rem;
-`;
-
-export const DetailValue = styled.div`
-  color: #4b5563;
 `;

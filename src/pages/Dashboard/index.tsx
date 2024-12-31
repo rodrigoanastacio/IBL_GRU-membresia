@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { Search, ChevronLeft, ChevronRight, Eye } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, Eye, Users, UserPlus, UserCheck, HardDrive } from "lucide-react";
 import { getMembers } from "../../services/member";
 import { MemberDetailsModal } from "../../components/MemberDetailsModal";
 import { StorageUsageCard } from "../../components/StorageUsageCard";
+import { StatsCard } from "../../components/StatsCard";
 import * as S from "./styles";
 
 export function Dashboard() {
@@ -41,10 +42,24 @@ export function Dashboard() {
     startIndex + itemsPerPage
   );
 
+  // Calcular estatísticas
+  const totalMembers = members.length;
+  const newMembersThisMonth = members.filter(member => {
+    const memberDate = new Date(member.created_at);
+    const today = new Date();
+    return memberDate.getMonth() === today.getMonth() && 
+           memberDate.getFullYear() === today.getFullYear();
+  }).length;
+
+  const activeMembers = members.filter(member => member.belongs_to_gc).length;
+
   return (
     <S.Container>
       <S.Header>
-        <S.Title>Dashboard de Membros</S.Title>
+        <div>
+          <S.Title>Dashboard de Membros</S.Title>
+          <S.Subtitle>Gerencie e monitore os membros da igreja</S.Subtitle>
+        </div>
         <S.SearchContainer>
           <Search size={20} />
           <S.SearchInput
@@ -56,14 +71,46 @@ export function Dashboard() {
         </S.SearchContainer>
       </S.Header>
 
-      <S.DashboardGrid>
+      <S.StatsGrid>
+        <StatsCard
+          title="Total de Membros"
+          value={totalMembers}
+          description="Total de membros cadastrados"
+          icon={Users}
+          color="blue"
+        />
+        <StatsCard
+          title="Novos Membros"
+          value={newMembersThisMonth}
+          description="Novos membros este mês"
+          icon={UserPlus}
+          color="green"
+          trend={{ value: 12, isPositive: true }}
+        />
+        <StatsCard
+          title="Membros Ativos"
+          value={activeMembers}
+          description="Membros participando de GCs"
+          icon={UserCheck}
+          color="yellow"
+        />
         <StorageUsageCard />
-      </S.DashboardGrid>
+      </S.StatsGrid>
 
       {loading ? (
-        <S.LoadingMessage>Carregando...</S.LoadingMessage>
+        <S.LoadingContainer>
+          <S.LoadingSpinner />
+          <S.LoadingMessage>Carregando dados...</S.LoadingMessage>
+        </S.LoadingContainer>
       ) : (
-        <>
+        <S.TableContainer>
+          <S.TableHeader>
+            <S.TableTitle>Lista de Membros</S.TableTitle>
+            <S.TableDescription>
+              {filteredMembers.length} membros encontrados
+            </S.TableDescription>
+          </S.TableHeader>
+
           <S.Table>
             <thead>
               <tr>
@@ -71,44 +118,41 @@ export function Dashboard() {
                 <th>Email</th>
                 <th>Telefone</th>
                 <th>Cidade</th>
-                <th>Certidão de Casamento</th>
-                <th>Documento de Identificação</th>
+                <th>Status GC</th>
+                <th>Documentos</th>
                 <th>Ações</th>
               </tr>
             </thead>
             <tbody>
               {paginatedMembers.map((member) => (
                 <tr key={member.id}>
-                  <td>{member.full_name}</td>
+                  <td>
+                    <S.MemberName>{member.full_name}</S.MemberName>
+                  </td>
                   <td>{member.email}</td>
                   <td>{member.phone}</td>
                   <td>{member.city}</td>
                   <td>
-                    {member.marriage_certificate_url && (
-                      <a
-                        href={member.marriage_certificate_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800"
-                      >
-                        Ver Certidão
-                      </a>
-                    )}
+                    <S.StatusBadge active={member.belongs_to_gc}>
+                      {member.belongs_to_gc ? 'Ativo' : 'Inativo'}
+                    </S.StatusBadge>
                   </td>
                   <td>
-                    {member.identification_url && (
-                      <a
-                        href={member.identification_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800"
-                      >
-                        Ver Documento
-                      </a>
-                    )}
+                    <S.DocumentBadges>
+                      {member.marriage_certificate_url && (
+                        <S.DocumentBadge title="Certidão de Casamento">
+                          Certidão
+                        </S.DocumentBadge>
+                      )}
+                      {member.identification_url && (
+                        <S.DocumentBadge title="Documento de Identificação">
+                          RG/CNH
+                        </S.DocumentBadge>
+                      )}
+                    </S.DocumentBadges>
                   </td>
                   <td>
-                    <S.ActionButton onClick={() => setSelectedMember(member)}>
+                    <S.ActionButton onClick={() => setSelectedMember(member)} title="Ver detalhes">
                       <Eye size={18} />
                     </S.ActionButton>
                   </td>
@@ -136,7 +180,7 @@ export function Dashboard() {
               <ChevronRight size={20} />
             </S.PaginationButton>
           </S.Pagination>
-        </>
+        </S.TableContainer>
       )}
 
       {selectedMember && (
