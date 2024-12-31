@@ -29,7 +29,9 @@ export const InputContainer = styled.div<InputContainerProps>`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.625rem 0.75rem;
+  width: 100%;
+  height: 2.75rem;
+  padding: 0 0.75rem;
   border-radius: 0.375rem;
   border: 2px solid ${({ hasError, isFocused }) => 
     hasError ? '#ef4444' : 
@@ -46,6 +48,7 @@ export const InputContainer = styled.div<InputContainerProps>`
 
   svg {
     color: #6b7280;
+    flex-shrink: 0;
   }
 `;
 
@@ -74,6 +77,10 @@ export const Error = styled.span`
 
 // Estilos globais para o DatePicker
 export const GlobalDatePickerStyles = styled.div`
+  .react-datepicker-wrapper {
+    width: 100%;
+  }
+
   .react-datepicker {
     font-family: inherit;
     border: 1px solid #e5e7eb;
@@ -135,6 +142,8 @@ export const GlobalDatePickerStyles = styled.div`
     border: 1px solid #e5e7eb;
     border-radius: 0.375rem;
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    max-height: 200px;
+    overflow-y: auto;
   }
 
   .react-datepicker__year-option {
@@ -144,5 +153,9 @@ export const GlobalDatePickerStyles = styled.div`
     &:hover {
       background-color: #e0f2fe;
     }
+  }
+
+  .react-datepicker__triangle {
+    display: none;
   }
 `;
