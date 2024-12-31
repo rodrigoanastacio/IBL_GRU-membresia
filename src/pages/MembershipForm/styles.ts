@@ -1,65 +1,64 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  min-height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
   padding: 2rem;
-  background-color: #f3f4f6;
+  background-color: #f9fafb;
+  min-height: 100vh;
 `;
 
 export const FormContainer = styled.div`
-  background: white;
+  width: 100%;
+  max-width: 48rem;
+  background-color: white;
   padding: 2rem;
   border-radius: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 800px;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
 `;
 
 export const Title = styled.h1`
-  color: #1f2937;
   font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
   margin-bottom: 2rem;
-  text-align: center;
 `;
 
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
 `;
 
 export const Row = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-`;
-
-export const CheckboxGroup = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin: 1rem 0;
+  gap: 1rem;
+  align-items: flex-start;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+  }
+
+  & > * {
+    flex: 1;
+  }
 `;
 
 export const SubmitButton = styled.button`
   background-color: #2563eb;
   color: white;
-  padding: 0.75rem;
-  border: none;
+  padding: 0.75rem 1.5rem;
   border-radius: 0.375rem;
-  font-weight: 600;
-  margin-top: 1rem;
+  font-weight: 500;
   transition: all 0.2s;
+  margin-top: 1rem;
 
-  &:hover:not(:disabled) {
+  &:hover {
     background-color: #1d4ed8;
   }
 
   &:disabled {
-    opacity: 0.7;
+    background-color: #93c5fd;
     cursor: not-allowed;
   }
 `;

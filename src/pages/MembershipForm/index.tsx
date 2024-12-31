@@ -5,6 +5,7 @@ import { Input } from "../../components/Input";
 import { FileUpload } from "../../components/FileUpload";
 import { Select } from "../../components/Select";
 import { Checkbox } from "../../components/Checkbox";
+import { RadioGroup } from "../../components/RadioGroup";
 import { AddressForm } from "../../components/AddressForm";
 import { membershipFormSchema, type MembershipFormData } from "./validation";
 import { createMember } from "../../services/member";
@@ -18,6 +19,11 @@ const maritalStatusOptions = [
   { value: "viuvo", label: "Viúvo(a)" },
 ];
 
+const volunteerOptions = [
+  { value: true, label: "Sim" },
+  { value: false, label: "Não" },
+];
+
 export function MembershipForm() {
   const methods = useForm<MembershipFormData>({
     resolver: zodResolver(membershipFormSchema),
@@ -26,6 +32,8 @@ export function MembershipForm() {
   const {
     handleSubmit,
     register,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = methods;
 
@@ -124,13 +132,17 @@ export function MembershipForm() {
               error={errors.pastoralInterviewer?.message}
             />
 
-            <S.CheckboxGroup>
-              <Checkbox label="Pertence ao GC" {...register("belongsToGC")} />
-              <Checkbox
-                label="Deseja participar do Giro de Voluntários?"
-                {...register("wantsToVolunteer")}
-              />
-            </S.CheckboxGroup>
+            <Checkbox label="Pertence ao GC" {...register("belongsToGC")} />
+            <RadioGroup
+              label="Deseja participar do Giro de Voluntários?"
+              options={volunteerOptions}
+              value={watch("wantsToVolunteer")}
+              onChange={(value) =>
+                setValue("wantsToVolunteer", value as boolean)
+              }
+              error={errors.wantsToVolunteer?.message}
+              required
+            />
 
             <S.SubmitButton type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Enviando..." : "Enviar Formulário"}
