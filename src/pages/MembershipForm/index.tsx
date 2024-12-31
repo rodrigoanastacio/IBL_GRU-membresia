@@ -11,9 +11,10 @@ import { createMember } from "../../services/member";
 import * as S from "./styles";
 
 const maritalStatusOptions = [
-  { value: "solteiro", label: "Solteiro(a)" },
-  { value: "casado", label: "Casado(a)" },
+  { value: "casado-civil", label: "Casado Civil" },
+  { value: "casado-civil-religioso", label: "Casado Civil e Religioso" },
   { value: "divorciado", label: "Divorciado(a)" },
+  { value: "solteiro", label: "Solteiro(a)" },
   { value: "viuvo", label: "Viúvo(a)" },
 ];
 
