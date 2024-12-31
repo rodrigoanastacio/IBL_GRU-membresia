@@ -1,17 +1,40 @@
 import { supabase } from "../lib/supabase";
 import { MembershipFormData } from "../pages/MembershipForm/validation";
+import imageCompression from 'browser-image-compression';
+
+const compressionOptions = {
+  maxSizeMB: 1,
+  maxWidthOrHeight: 1920,
+  useWebWorker: true,
+};
+
+async function compressImageIfNeeded(file: File): Promise<File> {
+  if (!file.type.startsWith('image/')) {
+    return file;
+  }
+
+  try {
+    return await imageCompression(file, compressionOptions);
+  } catch (error) {
+    console.error('Error compressing image:', error);
+    return file;
+  }
+}
 
 async function uploadFile(file: File | null | undefined, bucket: string) {
   if (!file) return null;
   
   try {
+    // Comprimir a imagem antes do upload
+    const fileToUpload = await compressImageIfNeeded(file);
+    
     const fileExt = file.name.split('.').pop();
     const fileName = `${Math.random()}.${fileExt}`;
     const filePath = `${fileName}`;
 
     const { error: uploadError } = await supabase.storage
       .from(bucket)
-      .upload(filePath, file);
+      .upload(filePath, fileToUpload);
 
     if (uploadError) throw uploadError;
 
@@ -28,19 +51,18 @@ async function uploadFile(file: File | null | undefined, bucket: string) {
 
 export async function createMember(data: MembershipFormData) {
   try {
-    const marriageCertificateUrl = await uploadFile(
-      data.marriageCertificate instanceof FileList 
-        ? data.marriageCertificate[0] 
-        : data.marriageCertificate as File,
-      'documents'
-    );
+    const marriageCertificateFile = data.marriageCertificate instanceof FileList 
+      ? data.marriageCertificate[0] 
+      : data.marriageCertificate as File;
 
-    const identificationUrl = await uploadFile(
-      data.identification instanceof FileList 
-        ? data.identification[0] 
-        : data.identification as File,
-      'documents'
-    );
+    const identificationFile = data.identification instanceof FileList 
+      ? data.identification[0] 
+      : data.identification as File;
+
+    const [marriageCertificateUrl, identificationUrl] = await Promise.all([
+      uploadFile(marriageCertificateFile, 'documents'),
+      uploadFile(identificationFile, 'documents')
+    ]);
 
     const { error } = await supabase.from("members").insert([
       {

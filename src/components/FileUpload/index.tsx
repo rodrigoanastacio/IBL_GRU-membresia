@@ -11,6 +11,12 @@ interface FileUploadProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
 }
 
+const compressionOptions = {
+  maxSizeMB: 1,
+  maxWidthOrHeight: 1920,
+  useWebWorker: true,
+};
+
 export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
   ({ label, subtitle, error, onChange, ...props }, ref) => {
     const [file, setFile] = useState<File | null>(null);
@@ -29,16 +35,17 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
       setOriginalSize(imageFile.size);
 
       try {
-        const options = {
-          maxSizeMB: 1,
-          maxWidthOrHeight: 1920,
-          useWebWorker: true,
-        };
-
-        const compressedFile = await imageCompression(imageFile, options);
-        setCompressedSize(compressedFile.size);
+        const compressedFile = await imageCompression(imageFile, compressionOptions);
+        
+        // Criar um novo arquivo com o nome original
+        const newFile = new File([compressedFile], imageFile.name, {
+          type: compressedFile.type,
+          lastModified: compressedFile.lastModified,
+        });
+        
+        setCompressedSize(newFile.size);
         setIsCompressing(false);
-        return compressedFile;
+        return newFile;
       } catch (error) {
         console.error('Error compressing image:', error);
         setIsCompressing(false);
@@ -48,18 +55,35 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
 
     const handleFileSelection = async (selectedFile: File) => {
       setFile(selectedFile);
-      const processedFile = await compressImage(selectedFile);
       
-      if (onChange) {
-        const event = {
-          target: {
-            name: props.name,
-            files: [processedFile],
-            value: processedFile,
-            type: 'file'
-          }
-        } as any;
-        onChange(event);
+      if (selectedFile.type.startsWith('image/')) {
+        const processedFile = await compressImage(selectedFile);
+        setFile(processedFile); // Atualiza o arquivo exibido com o comprimido
+        
+        if (onChange) {
+          const event = {
+            target: {
+              name: props.name,
+              files: [processedFile],
+              value: processedFile,
+              type: 'file'
+            }
+          } as any;
+          onChange(event);
+        }
+      } else {
+        // Se não for imagem, usa o arquivo original
+        if (onChange) {
+          const event = {
+            target: {
+              name: props.name,
+              files: [selectedFile],
+              value: selectedFile,
+              type: 'file'
+            }
+          } as any;
+          onChange(event);
+        }
       }
     };
 
