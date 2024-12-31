@@ -3,6 +3,7 @@ import { X, Download } from 'lucide-react';
 import * as S from './styles';
 import { formatDate } from '../../utils/date';
 import { generatePDF } from '../../services/pdf';
+import { DocumentPreview } from '../DocumentPreview';
 
 interface Member {
   id: string;
@@ -132,13 +133,10 @@ export function MemberDetailsModal({ member, onClose }: MemberDetailsModalProps)
               <S.DetailLabel>Certidão de Casamento</S.DetailLabel>
               <S.DetailValue>
                 {member.marriage_certificate_url && (
-                  <S.DocumentLink 
-                    href={member.marriage_certificate_url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                  >
-                    Ver Certidão
-                  </S.DocumentLink>
+                  <DocumentPreview
+                    url={member.marriage_certificate_url}
+                    title="Certidão de Casamento"
+                  />
                 )}
               </S.DetailValue>
             </S.DetailItem>
@@ -148,13 +146,10 @@ export function MemberDetailsModal({ member, onClose }: MemberDetailsModalProps)
               <S.DetailLabel>RG ou CNH</S.DetailLabel>
               <S.DetailValue>
                 {member.identification_url && (
-                  <S.DocumentLink 
-                    href={member.identification_url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                  >
-                    Ver Documento
-                  </S.DocumentLink>
+                  <DocumentPreview
+                    url={member.identification_url}
+                    title="Documento de Identificação"
+                  />
                 )}
               </S.DetailValue>
             </S.DetailItem>
