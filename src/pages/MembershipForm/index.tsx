@@ -6,6 +6,7 @@ import { FileUpload } from "../../components/FileUpload";
 import { Select } from "../../components/Select";
 import { Checkbox } from "../../components/Checkbox";
 import { RadioGroup } from "../../components/RadioGroup";
+import { DatePicker } from "../../components/DatePicker";
 import { AddressForm } from "../../components/AddressForm";
 import { membershipFormSchema, type MembershipFormData } from "./validation";
 import { createMember } from "../../services/member";
@@ -61,17 +62,21 @@ export function MembershipForm() {
             />
 
             <S.Row>
-              <Input
+              <DatePicker
                 label="Data de Nascimento"
-                type="date"
-                {...register("birthDate")}
+                value={watch("birthDate") ? new Date(watch("birthDate")) : null}
+                onChange={(date) => setValue("birthDate", date?.toISOString() || "")}
                 error={errors.birthDate?.message}
+                required
+                maxDate={new Date()}
               />
-              <Input
+              <DatePicker
                 label="Data de Batismo"
-                type="date"
-                {...register("baptismDate")}
+                value={watch("baptismDate") ? new Date(watch("baptismDate")) : null}
+                onChange={(date) => setValue("baptismDate", date?.toISOString() || "")}
                 error={errors.baptismDate?.message}
+                required
+                maxDate={new Date()}
               />
             </S.Row>
 
