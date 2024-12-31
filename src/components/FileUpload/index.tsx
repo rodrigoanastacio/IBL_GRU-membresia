@@ -32,7 +32,14 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
       if (droppedFile) {
         setFile(droppedFile);
         if (onChange) {
-          const event = { target: { files: [droppedFile] } } as any;
+          const event = {
+            target: {
+              name: props.name,
+              files: [droppedFile],
+              value: droppedFile,
+              type: 'file'
+            }
+          } as any;
           onChange(event);
         }
       }
@@ -42,9 +49,17 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
       const selectedFile = e.target.files?.[0];
       if (selectedFile) {
         setFile(selectedFile);
-      }
-      if (onChange) {
-        onChange(e);
+        if (onChange) {
+          const event = {
+            target: {
+              name: e.target.name,
+              files: [selectedFile],
+              value: selectedFile,
+              type: 'file'
+            }
+          } as any;
+          onChange(event);
+        }
       }
     };
 
@@ -53,49 +68,46 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
     };
 
     return (
-      <S.Container>
-        <S.Label>{label}</S.Label>
-        {subtitle && <S.Subtitle>{subtitle}</S.Subtitle>}
+      <S.FileUploadContainer>
+        <S.FileUploadLabel>{label}</S.FileUploadLabel>
+        {subtitle && <S.FileUploadSubtitle>{subtitle}</S.FileUploadSubtitle>}
         
-        <S.UploadArea
+        <S.FileUploadDropZone
           onClick={handleClick}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
-          $isDragging={isDragging}
-          $hasError={!!error}
+          isDragging={isDragging}
         >
-          <input
-            type="file"
-            ref={(e) => {
-              if (typeof ref === 'function') {
-                ref(e);
-              } else if (ref) {
-                ref.current = e;
-              }
-              inputRef.current = e;
-            }}
-            onChange={handleFileChange}
-            style={{ display: 'none' }}
-            {...props}
-          />
-          
           {file ? (
             <FilePreview file={file} />
           ) : (
-            <S.UploadContent>
+            <>
               <Upload size={24} />
-              <S.UploadText>
-                Clique aqui / Solte o arquivo aqui
-              </S.UploadText>
-            </S.UploadContent>
+              <S.FileUploadDropzoneText>
+                Arraste e solte ou clique para selecionar
+              </S.FileUploadDropzoneText>
+            </>
           )}
-        </S.UploadArea>
-        
-        {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
-      </S.Container>
+        </S.FileUploadDropZone>
+
+        <input
+          type="file"
+          ref={(e) => {
+            inputRef.current = e;
+            if (typeof ref === 'function') {
+              ref(e);
+            } else if (ref) {
+              ref.current = e;
+            }
+          }}
+          onChange={handleFileChange}
+          style={{ display: 'none' }}
+          {...props}
+        />
+
+        {error && <S.FileUploadError>{error}</S.FileUploadError>}
+      </S.FileUploadContainer>
     );
   }
 );
-
-FileUpload.displayName = 'FileUpload';
