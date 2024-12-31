@@ -15,11 +15,23 @@ const fileSchema = z.any()
   });
 
 export const membershipFormSchema = z.object({
-  fullName: z.string().min(3, "Nome completo é obrigatório"),
+  fullName: z
+    .string()
+    .min(3, "Nome deve ter no mínimo 3 caracteres")
+    .max(100, "Nome deve ter no máximo 100 caracteres"),
   birthDate: z.string().min(1, "Data de nascimento é obrigatória"),
   baptismDate: z.string().min(1, "Data de batismo é obrigatória"),
-  baptismChurch: z.string().min(1, "Igreja do batismo é obrigatória"),
-  phone: z.string().min(1, "Telefone é obrigatório"),
+  baptismChurch: z
+    .string()
+    .min(3, "Nome da igreja deve ter no mínimo 3 caracteres")
+    .max(100, "Nome da igreja deve ter no máximo 100 caracteres"),
+  phone: z
+    .string()
+    .min(1, "Telefone é obrigatório")
+    .regex(
+      /^\(\d{2}\) \d{5}-\d{4}$/,
+      "Telefone deve estar no formato (00) 00000-0000"
+    ),
   email: z.string().email("E-mail inválido"),
   cep: z.string().min(8, "CEP inválido").max(9, "CEP inválido"),
   street: z.string().min(1, "Rua é obrigatória"),
@@ -35,7 +47,10 @@ export const membershipFormSchema = z.object({
   maritalStatus: z.string().min(1, "Estado civil é obrigatório"),
   marriageCertificate: z.instanceof(FileList).optional().or(z.instanceof(File).optional()),
   identification: z.instanceof(FileList).optional().or(z.instanceof(File).optional()),
-  pastoralInterviewer: z.string().min(1, "Nome do entrevistador é obrigatório"),
+  pastoralInterviewer: z
+    .string()
+    .min(3, "Nome do entrevistador deve ter no mínimo 3 caracteres")
+    .max(100, "Nome do entrevistador deve ter no máximo 100 caracteres"),
   belongsToGC: z.boolean(),
   wantsToVolunteer: z.boolean(),
 });

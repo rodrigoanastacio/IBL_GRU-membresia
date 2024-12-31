@@ -13,12 +13,14 @@ export const Label = styled.label`
 `;
 
 export const InputField = styled.input`
-  padding: 0.75rem;
+  height: 2.75rem;
+  padding: 0 0.75rem;
   border: 1px solid #d1d5db;
   border-radius: 0.375rem;
   font-size: 1rem;
   width: 100%;
-  
+  background-color: white;
+
   &:focus {
     outline: none;
     border-color: #2563eb;

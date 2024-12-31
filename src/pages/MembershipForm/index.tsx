@@ -7,6 +7,7 @@ import { Select } from "../../components/Select";
 import { Checkbox } from "../../components/Checkbox";
 import { RadioGroup } from "../../components/RadioGroup";
 import { DatePicker } from "../../components/DatePicker";
+import { MaskedInput } from "../../components/MaskedInput";
 import { AddressForm } from "../../components/AddressForm";
 import { membershipFormSchema, type MembershipFormData } from "./validation";
 import { createMember } from "../../services/member";
@@ -87,10 +88,13 @@ export function MembershipForm() {
             />
 
             <S.Row>
-              <Input
+              <MaskedInput
                 label="Telefone"
+                mask="(99) 99999-9999"
+                placeholder="(00) 00000-0000"
                 {...register("phone")}
                 error={errors.phone?.message}
+                required
               />
               <Input
                 label="E-mail"
