@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Search, ChevronLeft, ChevronRight, Eye } from "lucide-react";
 import { getMembers } from "../../services/member";
+import { MemberDetailsModal } from "../../components/MemberDetailsModal";
 import * as S from "./styles";
 
 export function Dashboard() {
@@ -134,81 +135,10 @@ export function Dashboard() {
       )}
 
       {selectedMember && (
-        <S.Modal>
-          <S.ModalContent>
-            <S.ModalHeader>
-              <h2>Detalhes do Membro</h2>
-              <S.CloseButton onClick={() => setSelectedMember(null)}>
-                ×
-              </S.CloseButton>
-            </S.ModalHeader>
-            <S.ModalBody>
-              <S.DetailGroup>
-                <S.DetailLabel>Nome Completo:</S.DetailLabel>
-                <S.DetailValue>{selectedMember.full_name}</S.DetailValue>
-              </S.DetailGroup>
-              <S.DetailGroup>
-                <S.DetailLabel>Data de Nascimento:</S.DetailLabel>
-                <S.DetailValue>
-                  {new Date(selectedMember.birth_date).toLocaleDateString()}
-                </S.DetailValue>
-              </S.DetailGroup>
-              <S.DetailGroup>
-                <S.DetailLabel>Data de Batismo:</S.DetailLabel>
-                <S.DetailValue>
-                  {new Date(selectedMember.baptism_date).toLocaleDateString()}
-                </S.DetailValue>
-              </S.DetailGroup>
-              <S.DetailGroup>
-                <S.DetailLabel>Igreja do Batismo:</S.DetailLabel>
-                <S.DetailValue>{selectedMember.baptism_church}</S.DetailValue>
-              </S.DetailGroup>
-              <S.DetailGroup>
-                <S.DetailLabel>Contato:</S.DetailLabel>
-                <S.DetailValue>
-                  {selectedMember.phone} | {selectedMember.email}
-                </S.DetailValue>
-              </S.DetailGroup>
-              <S.DetailGroup>
-                <S.DetailLabel>Endereço:</S.DetailLabel>
-                <S.DetailValue>
-                  {selectedMember.street}, {selectedMember.number}
-                  {selectedMember.complement &&
-                    ` - ${selectedMember.complement}`}
-                  <br />
-                  {selectedMember.neighborhood} - {selectedMember.city}/
-                  {selectedMember.state}
-                  <br />
-                  CEP: {selectedMember.cep}
-                </S.DetailValue>
-              </S.DetailGroup>
-              <S.DetailGroup>
-                <S.DetailLabel>Profissão:</S.DetailLabel>
-                <S.DetailValue>{selectedMember.profession}</S.DetailValue>
-              </S.DetailGroup>
-              <S.DetailGroup>
-                <S.DetailLabel>Estado Civil:</S.DetailLabel>
-                <S.DetailValue>{selectedMember.marital_status}</S.DetailValue>
-              </S.DetailGroup>
-              <S.DetailGroup>
-                <S.DetailLabel>Entrevistador Pastoral:</S.DetailLabel>
-                <S.DetailValue>
-                  {selectedMember.pastoral_interviewer}
-                </S.DetailValue>
-              </S.DetailGroup>
-              <S.DetailGroup>
-                <S.DetailLabel>Participação:</S.DetailLabel>
-                <S.DetailValue>
-                  {selectedMember.belongs_to_gc && "• Pertence ao GC"}
-                  {selectedMember.belongs_to_gc &&
-                    selectedMember.wants_to_volunteer &&
-                    " | "}
-                  {selectedMember.wants_to_volunteer && "• Voluntário"}
-                </S.DetailValue>
-              </S.DetailGroup>
-            </S.ModalBody>
-          </S.ModalContent>
-        </S.Modal>
+        <MemberDetailsModal
+          member={selectedMember}
+          onClose={() => setSelectedMember(null)}
+        />
       )}
     </S.Container>
   );
