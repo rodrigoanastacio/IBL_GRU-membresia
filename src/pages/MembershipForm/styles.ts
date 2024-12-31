@@ -6,6 +6,10 @@ export const Container = styled.div`
   padding: 2rem;
   background-color: #f9fafb;
   min-height: 100vh;
+
+  @media (max-width: 640px) {
+    padding: 0;
+  }
 `;
 
 export const FormContainer = styled.div`
