@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import { MapPin, Loader2, LucideIcon } from "lucide-react";
+import { MapPin, Loader2 } from "lucide-react";
 import { useCep } from "../../hooks/useCep";
 import * as S from "./styles";
 import { Input } from "../Input";

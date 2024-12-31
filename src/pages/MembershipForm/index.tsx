@@ -1,11 +1,13 @@
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
 import { Input } from "../../components/Input";
 import { FileUpload } from "../../components/FileUpload";
 import { Select } from "../../components/Select";
 import { Checkbox } from "../../components/Checkbox";
 import { AddressForm } from "../../components/AddressForm";
 import { membershipFormSchema, type MembershipFormData } from "./validation";
+import { createMember } from "../../services/member";
 import * as S from "./styles";
 
 const maritalStatusOptions = [
@@ -23,11 +25,18 @@ export function MembershipForm() {
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = methods;
 
-  const onSubmit = (data: MembershipFormData) => {
-    console.log(data);
+  const onSubmit = async (data: MembershipFormData) => {
+    try {
+      await createMember(data);
+      toast.success("Ficha de membro cadastrada com sucesso!");
+      methods.reset(); // Limpa o formulário após o sucesso
+    } catch (error) {
+      console.error(error);
+      toast.error("Erro ao cadastrar ficha de membro. Tente novamente.");
+    }
   };
 
   return (
@@ -122,7 +131,9 @@ export function MembershipForm() {
               />
             </S.CheckboxGroup>
 
-            <S.SubmitButton type="submit">Enviar Formulário</S.SubmitButton>
+            <S.SubmitButton type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Enviando..." : "Enviar Formulário"}
+            </S.SubmitButton>
           </S.Form>
         </FormProvider>
       </S.FormContainer>

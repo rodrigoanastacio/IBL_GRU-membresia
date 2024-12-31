@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.div`
   min-height: 100vh;
@@ -52,9 +52,14 @@ export const SubmitButton = styled.button`
   border-radius: 0.375rem;
   font-weight: 600;
   margin-top: 1rem;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: #1d4ed8;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
   }
 `;
