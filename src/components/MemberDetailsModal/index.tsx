@@ -1,6 +1,8 @@
-import { X } from 'lucide-react';
+import { useRef } from 'react';
+import { X, Download } from 'lucide-react';
 import * as S from './styles';
 import { formatDate } from '../../utils/date';
+import { generatePDF } from '../../services/pdf';
 
 interface Member {
   id: string;
@@ -24,6 +26,7 @@ interface Member {
   pastoral_interviewer: string;
   belongs_to_gc: boolean;
   wants_to_volunteer: boolean;
+  created_at: string;
 }
 
 interface MemberDetailsModalProps {
@@ -32,17 +35,36 @@ interface MemberDetailsModalProps {
 }
 
 export function MemberDetailsModal({ member, onClose }: MemberDetailsModalProps) {
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const handleDownloadPDF = async () => {
+    if (!contentRef.current) return;
+
+    try {
+      const filename = `membro-${member.full_name.toLowerCase().replace(/\s+/g, '-')}.pdf`;
+      await generatePDF(contentRef.current, filename);
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+      // Aqui você pode adicionar uma notificação de erro para o usuário
+    }
+  };
+
   return (
     <S.Overlay>
       <S.Container>
         <S.Header>
           <S.Title>Detalhes da submissão ({formatDate(member.created_at)})</S.Title>
-          <S.CloseButton onClick={onClose}>
-            <X size={24} />
-          </S.CloseButton>
+          <S.HeaderActions>
+            <S.ActionButton onClick={handleDownloadPDF} title="Baixar PDF">
+              <Download size={20} />
+            </S.ActionButton>
+            <S.CloseButton onClick={onClose}>
+              <X size={24} />
+            </S.CloseButton>
+          </S.HeaderActions>
         </S.Header>
 
-        <S.Content>
+        <S.Content ref={contentRef}>
           <S.Subtitle>Respondente (Hóspede) - ID de Envio ({member.id})</S.Subtitle>
 
           <S.DetailsGrid>

@@ -33,7 +33,13 @@ export const Header = styled.div`
   position: sticky;
   top: 0;
   background-color: white;
-  z-index: 10;
+  z-index: 11;
+`;
+
+export const HeaderActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 `;
 
 export const Title = styled.h2`
@@ -49,7 +55,7 @@ export const Subtitle = styled.h3`
   margin: 0 0 1.5rem 0;
 `;
 
-export const CloseButton = styled.button`
+export const ActionButton = styled.button`
   background: none;
   border: none;
   color: #6b7280;
@@ -58,15 +64,20 @@ export const CloseButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.2s;
+  transition: all 0.2s;
+  border-radius: 0.375rem;
 
   &:hover {
     color: #111827;
+    background-color: #f3f4f6;
   }
 `;
 
+export const CloseButton = styled(ActionButton)``;
+
 export const Content = styled.div`
   padding: 1.5rem;
+  background-color: white;
 `;
 
 export const DetailsGrid = styled.div`
