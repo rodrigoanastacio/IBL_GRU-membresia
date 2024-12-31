@@ -2,22 +2,23 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 `;
 
 export const Header = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  gap: 1rem;
+  justify-content: space-between;
+  gap: 2rem;
 `;
 
 export const Title = styled.h1`
-  color: #1f2937;
-  font-size: 1.875rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
 `;
 
 export const SearchContainer = styled.div`
@@ -30,9 +31,11 @@ export const SearchContainer = styled.div`
   border: 1px solid #e5e7eb;
   width: 100%;
   max-width: 400px;
+  color: #6b7280;
 
-  svg {
-    color: #6b7280;
+  &:focus-within {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px #2563eb;
   }
 `;
 
@@ -41,34 +44,49 @@ export const SearchInput = styled.input`
   outline: none;
   width: 100%;
   font-size: 0.875rem;
+  color: #111827;
 
   &::placeholder {
     color: #9ca3af;
   }
 `;
 
+export const DashboardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+`;
+
 export const Table = styled.table`
   width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
   background-color: white;
   border-radius: 0.5rem;
-  border-collapse: collapse;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
 
-  th,
-  td {
-    padding: 1rem;
+  th, td {
+    padding: 0.75rem 1rem;
     text-align: left;
     border-bottom: 1px solid #e5e7eb;
   }
 
   th {
     background-color: #f9fafb;
-    font-weight: 600;
+    font-weight: 500;
     color: #374151;
+    font-size: 0.875rem;
   }
 
   td {
-    color: #4b5563;
+    color: #111827;
+    font-size: 0.875rem;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
   }
 
   tbody tr:hover {
@@ -81,13 +99,16 @@ export const ActionButton = styled.button`
   border: none;
   color: #6b7280;
   cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 0.25rem;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
   transition: all 0.2s;
 
   &:hover {
-    color: #2563eb;
-    background-color: #eff6ff;
+    color: #111827;
+    background-color: #f3f4f6;
   }
 `;
 
@@ -96,40 +117,36 @@ export const Pagination = styled.div`
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  margin-top: 2rem;
 `;
 
-export const PaginationButton = styled.button`
-  background: white;
+export const PaginationButton = styled.button<{ disabled?: boolean }>`
+  background: none;
   border: 1px solid #e5e7eb;
-  padding: 0.5rem;
   border-radius: 0.375rem;
+  padding: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  color: ${({ disabled }) => (disabled ? "#d1d5db" : "#374151")};
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   transition: all 0.2s;
 
-  &:hover:not(:disabled) {
-    background-color: #f9fafb;
+  &:not(:disabled):hover {
+    background-color: #f3f4f6;
     border-color: #d1d5db;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
   }
 `;
 
 export const PageInfo = styled.span`
-  color: #4b5563;
   font-size: 0.875rem;
+  color: #374151;
 `;
 
 export const LoadingMessage = styled.div`
   text-align: center;
-  color: #6b7280;
   padding: 2rem;
+  color: #6b7280;
+  font-size: 0.875rem;
 `;
 
 export const Modal = styled.div`

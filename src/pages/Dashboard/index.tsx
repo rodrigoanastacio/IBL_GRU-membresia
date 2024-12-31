@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Search, ChevronLeft, ChevronRight, Eye } from "lucide-react";
 import { getMembers } from "../../services/member";
 import { MemberDetailsModal } from "../../components/MemberDetailsModal";
+import { StorageUsageCard } from "../../components/StorageUsageCard";
 import * as S from "./styles";
 
 export function Dashboard() {
@@ -54,6 +55,10 @@ export function Dashboard() {
           />
         </S.SearchContainer>
       </S.Header>
+
+      <S.DashboardGrid>
+        <StorageUsageCard />
+      </S.DashboardGrid>
 
       {loading ? (
         <S.LoadingMessage>Carregando...</S.LoadingMessage>
