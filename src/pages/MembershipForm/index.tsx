@@ -14,11 +14,11 @@ import { createMember } from "../../services/member";
 import * as S from "./styles";
 
 const maritalStatusOptions = [
-  { value: "casado-civil", label: "Casado Civil" },
-  { value: "casado-civil-religioso", label: "Casado Civil e Religioso" },
-  { value: "divorciado", label: "Divorciado(a)" },
-  { value: "solteiro", label: "Solteiro(a)" },
-  { value: "viuvo", label: "Viúvo(a)" },
+  { value: "Casado Civil", label: "Casado Civil" },
+  { value: "Casado Civil e Religioso", label: "Casado Civil e Religioso" },
+  { value: "Divorciado(a)", label: "Divorciado(a)" },
+  { value: "Solteiro(a)", label: "Solteiro(a)" },
+  { value: "Viúvo(a)", label: "Viúvo(a)" },
 ];
 
 const volunteerOptions = [
@@ -66,15 +66,21 @@ export function MembershipForm() {
               <DatePicker
                 label="Data de Nascimento"
                 value={watch("birthDate") ? new Date(watch("birthDate")) : null}
-                onChange={(date) => setValue("birthDate", date?.toISOString() || "")}
+                onChange={(date) =>
+                  setValue("birthDate", date?.toISOString() || "")
+                }
                 error={errors.birthDate?.message}
                 required
                 maxDate={new Date()}
               />
               <DatePicker
                 label="Data de Batismo"
-                value={watch("baptismDate") ? new Date(watch("baptismDate")) : null}
-                onChange={(date) => setValue("baptismDate", date?.toISOString() || "")}
+                value={
+                  watch("baptismDate") ? new Date(watch("baptismDate")) : null
+                }
+                onChange={(date) =>
+                  setValue("baptismDate", date?.toISOString() || "")
+                }
                 error={errors.baptismDate?.message}
                 required
                 maxDate={new Date()}
