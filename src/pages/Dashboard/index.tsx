@@ -1,17 +1,32 @@
 import { useState, useEffect } from "react";
-import { Search, ChevronLeft, ChevronRight, Eye, Users, UserPlus, UserCheck, HardDrive } from "lucide-react";
-import { getMembers } from "../../services/member";
+import { Search, ChevronLeft, ChevronRight, Eye, Users, UserPlus, UserCheck, Trash2 } from "lucide-react";
+import { getMembers, deleteMember } from "../../services/member";
 import { MemberDetailsModal } from "../../components/MemberDetailsModal";
 import { StorageUsageCard } from "../../components/StorageUsageCard";
 import { StatsCard } from "../../components/StatsCard";
+import { ConfirmationModal } from "../../components/ConfirmationModal";
 import * as S from "./styles";
 
+interface Member {
+  id: string;
+  full_name: string;
+  email: string;
+  phone: string;
+  city: string;
+  belongs_to_gc: boolean;
+  marriage_certificate_url?: string;
+  identification_url?: string;
+  created_at: string;
+}
+
 export function Dashboard() {
-  const [members, setMembers] = useState([]);
+  const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedMember, setSelectedMember] = useState(null);
+  const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+  const [memberToDelete, setMemberToDelete] = useState<Member | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const itemsPerPage = 10;
 
   useEffect(() => {
@@ -26,6 +41,33 @@ export function Dashboard() {
       console.error("Error loading members:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteMember = async () => {
+    if (!memberToDelete) return;
+
+    try {
+      setIsDeleting(true);
+      console.log('Iniciando exclusão do membro:', memberToDelete.id);
+      
+      const success = await deleteMember(memberToDelete.id);
+      
+      if (success) {
+        console.log('Membro excluído com sucesso');
+        // Atualizar a lista localmente
+        setMembers(prev => prev.filter(m => m.id !== memberToDelete.id));
+        setMemberToDelete(null);
+        
+        // Recarregar a lista do servidor
+        console.log('Recarregando lista de membros...');
+        await loadMembers();
+      }
+    } catch (error) {
+      console.error("Error deleting member:", error);
+      // Aqui você pode adicionar uma notificação de erro
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -152,9 +194,21 @@ export function Dashboard() {
                     </S.DocumentBadges>
                   </td>
                   <td>
-                    <S.ActionButton onClick={() => setSelectedMember(member)} title="Ver detalhes">
-                      <Eye size={18} />
-                    </S.ActionButton>
+                    <S.ActionButtons>
+                      <S.ActionButton 
+                        onClick={() => setSelectedMember(member)} 
+                        title="Ver detalhes"
+                      >
+                        <Eye size={18} />
+                      </S.ActionButton>
+                      <S.ActionButton 
+                        onClick={() => setMemberToDelete(member)}
+                        title="Excluir membro"
+                        className="delete"
+                      >
+                        <Trash2 size={18} />
+                      </S.ActionButton>
+                    </S.ActionButtons>
                   </td>
                 </tr>
               ))}
@@ -189,6 +243,17 @@ export function Dashboard() {
           onClose={() => setSelectedMember(null)}
         />
       )}
+
+      <ConfirmationModal
+        isOpen={!!memberToDelete}
+        title="Excluir membro"
+        message={`Tem certeza que deseja excluir o membro "${memberToDelete?.full_name}"? Esta ação não poderá ser desfeita e todos os documentos associados serão removidos.`}
+        confirmLabel="Excluir"
+        cancelLabel="Cancelar"
+        onConfirm={handleDeleteMember}
+        onCancel={() => setMemberToDelete(null)}
+        isLoading={isDeleting}
+      />
     </S.Container>
   );
 }

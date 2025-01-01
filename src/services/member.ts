@@ -51,6 +51,8 @@ async function uploadFile(file: File | null | undefined, bucket: string) {
 
 export async function createMember(data: MembershipFormData) {
   try {
+    console.log('Iniciando processo de criação do membro');
+
     const marriageCertificateFile = data.marriageCertificate instanceof FileList 
       ? data.marriageCertificate[0] 
       : data.marriageCertificate as File;
@@ -63,6 +65,8 @@ export async function createMember(data: MembershipFormData) {
       uploadFile(marriageCertificateFile, 'documents'),
       uploadFile(identificationFile, 'documents')
     ]);
+
+    console.log('Arquivos carregados com sucesso');
 
     const { error } = await supabase.from("members").insert([
       {
@@ -90,6 +94,8 @@ export async function createMember(data: MembershipFormData) {
     ]);
 
     if (error) throw error;
+
+    console.log('Membro criado com sucesso');
   } catch (error) {
     console.error('Error creating member:', error);
     throw error;
@@ -97,11 +103,82 @@ export async function createMember(data: MembershipFormData) {
 }
 
 export async function getMembers() {
+  console.log('Buscando membros');
+
   const { data, error } = await supabase
     .from("members")
     .select("*")
     .order("created_at", { ascending: false });
 
-  if (error) throw error;
+  if (error) {
+    console.error("Erro ao buscar membros:", error);
+    throw error;
+  }
+
+  console.log('Membros encontrados com sucesso');
   return data;
+}
+
+export async function deleteMember(id: string) {
+  try {
+    console.log('Iniciando processo de exclusão do membro:', id);
+
+    // Primeiro, buscar o membro para pegar as URLs dos documentos
+    const { data: member, error: fetchError } = await supabase
+      .from("members")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (fetchError) {
+      console.error("Erro ao buscar membro:", fetchError);
+      throw fetchError;
+    }
+
+    console.log('Membro encontrado:', member);
+
+    // Deletar os arquivos do storage se existirem
+    if (member) {
+      const bucket = supabase.storage.from("documents");
+      
+      if (member.marriage_certificate_url) {
+        const path = member.marriage_certificate_url.split("/").pop();
+        if (path) {
+          console.log('Removendo certidão de casamento:', path);
+          const { error: removeError } = await bucket.remove([path]);
+          if (removeError) {
+            console.error("Erro ao remover certidão de casamento:", removeError);
+          }
+        }
+      }
+
+      if (member.identification_url) {
+        const path = member.identification_url.split("/").pop();
+        if (path) {
+          console.log('Removendo documento de identificação:', path);
+          const { error: removeError } = await bucket.remove([path]);
+          if (removeError) {
+            console.error("Erro ao remover documento de identificação:", removeError);
+          }
+        }
+      }
+    }
+
+    console.log('Iniciando remoção do registro no banco...');
+
+    // Deletar o registro da tabela usando RPC
+    const { data: deleteData, error: deleteError } = await supabase
+      .rpc('delete_member', { member_id: id });
+
+    if (deleteError) {
+      console.error("Erro ao deletar membro:", deleteError);
+      throw deleteError;
+    }
+
+    console.log('Registro deletado com sucesso:', deleteData);
+    return true;
+  } catch (error) {
+    console.error("Erro ao processar exclusão:", error);
+    throw error;
+  }
 }

@@ -165,6 +165,12 @@ export const DocumentBadge = styled.span`
   color: #0284c7;
 `;
 
+export const ActionButtons = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+`;
+
 export const ActionButton = styled.button`
   background: none;
   border: none;
@@ -180,6 +186,13 @@ export const ActionButton = styled.button`
   &:hover {
     color: #111827;
     background-color: #f3f4f6;
+  }
+
+  &.delete {
+    &:hover {
+      color: #dc2626;
+      background-color: #fee2e2;
+    }
   }
 `;
 
