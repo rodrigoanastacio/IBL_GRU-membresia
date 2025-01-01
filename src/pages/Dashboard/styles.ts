@@ -93,10 +93,16 @@ export const StatsGrid = styled.div`
 `;
 
 export const TableContainer = styled.div`
+  width: 100%;
   background-color: white;
   border-radius: 1rem;
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
-  overflow: hidden;
+`;
+
+export const TableWrapper = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
 `;
 
 export const TableHeader = styled.div`
@@ -119,13 +125,19 @@ export const TableDescription = styled.p`
 
 export const Table = styled.table`
   width: 100%;
-  border-collapse: separate;
+  border-collapse: collapse;
   border-spacing: 0;
+  min-width: 1000px;
+  overflow-x: auto;
+  display: block;
 
   th, td {
     padding: 1rem 1.5rem;
     text-align: left;
     border-bottom: 1px solid #e5e7eb;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   th {

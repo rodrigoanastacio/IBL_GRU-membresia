@@ -190,6 +190,10 @@ export function Dashboard() {
             </S.TableDescription>
           </S.TableHeader>
 
+          <S.TableWrapper>
+
+          
+
           <S.Table>
             <thead>
               <tr>
@@ -251,6 +255,8 @@ export function Dashboard() {
               ))}
             </tbody>
           </S.Table>
+
+          </S.TableWrapper>
 
           <S.Pagination>
             <S.PaginationButton
