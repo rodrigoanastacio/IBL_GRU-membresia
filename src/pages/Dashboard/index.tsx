@@ -1,5 +1,15 @@
 import { useState, useEffect } from "react";
-import { Search, ChevronLeft, ChevronRight, Eye, Users, UserPlus, UserCheck, Trash2, Trash } from "lucide-react";
+import {
+  Search,
+  ChevronLeft,
+  ChevronRight,
+  Eye,
+  Users,
+  UserPlus,
+  UserCheck,
+  Trash2,
+  Trash,
+} from "lucide-react";
 import { getMembers, deleteMember } from "../../services/member";
 import { cleanupOrphanedFiles } from "../../services/storage";
 import { MemberDetailsModal } from "../../components/MemberDetailsModal";
@@ -52,18 +62,18 @@ export function Dashboard() {
 
     try {
       setIsDeleting(true);
-      console.log('Iniciando exclusão do membro:', memberToDelete.id);
-      
+      console.log("Iniciando exclusão do membro:", memberToDelete.id);
+
       const success = await deleteMember(memberToDelete.id);
-      
+
       if (success) {
-        console.log('Membro excluído com sucesso');
+        console.log("Membro excluído com sucesso");
         // Atualizar a lista localmente
-        setMembers(prev => prev.filter(m => m.id !== memberToDelete.id));
+        setMembers((prev) => prev.filter((m) => m.id !== memberToDelete.id));
         setMemberToDelete(null);
-        
+
         // Recarregar a lista do servidor
-        console.log('Recarregando lista de membros...');
+        console.log("Recarregando lista de membros...");
         await loadMembers();
       }
     } catch (error) {
@@ -78,13 +88,13 @@ export function Dashboard() {
     try {
       setIsCleaningStorage(true);
       const result = await cleanupOrphanedFiles();
-      console.log('Resultado da limpeza:', result);
-      
+      console.log("Resultado da limpeza:", result);
+
       // Recarregar dados após limpeza
       await loadMembers();
       setShowCleanupConfirm(false);
     } catch (error) {
-      console.error('Erro ao limpar storage:', error);
+      console.error("Erro ao limpar storage:", error);
     } finally {
       setIsCleaningStorage(false);
     }
@@ -105,14 +115,16 @@ export function Dashboard() {
 
   // Calcular estatísticas
   const totalMembers = members.length;
-  const newMembersThisMonth = members.filter(member => {
+  const newMembersThisMonth = members.filter((member) => {
     const memberDate = new Date(member.created_at);
     const today = new Date();
-    return memberDate.getMonth() === today.getMonth() && 
-           memberDate.getFullYear() === today.getFullYear();
+    return (
+      memberDate.getMonth() === today.getMonth() &&
+      memberDate.getFullYear() === today.getFullYear()
+    );
   }).length;
 
-  const activeMembers = members.filter(member => member.belongs_to_gc).length;
+  const activeMembers = members.filter((member) => member.belongs_to_gc).length;
 
   return (
     <S.Container>
@@ -129,7 +141,7 @@ export function Dashboard() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <S.CleanupButton 
+          <S.CleanupButton
             onClick={() => setShowCleanupConfirm(true)}
             title="Limpar arquivos não utilizados"
           >
@@ -139,6 +151,7 @@ export function Dashboard() {
       </S.Header>
 
       <S.StatsGrid>
+        <StorageUsageCard />
         <StatsCard
           title="Total de Membros"
           value={totalMembers}
@@ -161,7 +174,6 @@ export function Dashboard() {
           icon={UserCheck}
           color="yellow"
         />
-        <StorageUsageCard />
       </S.StatsGrid>
 
       {loading ? (
@@ -201,7 +213,7 @@ export function Dashboard() {
                   <td>{member.city}</td>
                   <td>
                     <S.StatusBadge active={member.belongs_to_gc}>
-                      {member.belongs_to_gc ? 'Ativo' : 'Inativo'}
+                      {member.belongs_to_gc ? "Ativo" : "Inativo"}
                     </S.StatusBadge>
                   </td>
                   <td>
@@ -220,13 +232,13 @@ export function Dashboard() {
                   </td>
                   <td>
                     <S.ActionButtons>
-                      <S.ActionButton 
-                        onClick={() => setSelectedMember(member)} 
+                      <S.ActionButton
+                        onClick={() => setSelectedMember(member)}
                         title="Ver detalhes"
                       >
                         <Eye size={18} />
                       </S.ActionButton>
-                      <S.ActionButton 
+                      <S.ActionButton
                         onClick={() => setMemberToDelete(member)}
                         title="Excluir membro"
                         className="delete"
