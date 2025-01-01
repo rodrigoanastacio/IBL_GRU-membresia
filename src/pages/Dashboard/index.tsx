@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Search, ChevronLeft, ChevronRight, Eye, Users, UserPlus, UserCheck, Trash2 } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, Eye, Users, UserPlus, UserCheck, Trash2, Trash } from "lucide-react";
 import { getMembers, deleteMember } from "../../services/member";
+import { cleanupOrphanedFiles } from "../../services/storage";
 import { MemberDetailsModal } from "../../components/MemberDetailsModal";
 import { StorageUsageCard } from "../../components/StorageUsageCard";
 import { StatsCard } from "../../components/StatsCard";
@@ -27,6 +28,8 @@ export function Dashboard() {
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [memberToDelete, setMemberToDelete] = useState<Member | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isCleaningStorage, setIsCleaningStorage] = useState(false);
+  const [showCleanupConfirm, setShowCleanupConfirm] = useState(false);
   const itemsPerPage = 10;
 
   useEffect(() => {
@@ -71,6 +74,22 @@ export function Dashboard() {
     }
   };
 
+  const handleCleanupStorage = async () => {
+    try {
+      setIsCleaningStorage(true);
+      const result = await cleanupOrphanedFiles();
+      console.log('Resultado da limpeza:', result);
+      
+      // Recarregar dados após limpeza
+      await loadMembers();
+      setShowCleanupConfirm(false);
+    } catch (error) {
+      console.error('Erro ao limpar storage:', error);
+    } finally {
+      setIsCleaningStorage(false);
+    }
+  };
+
   const filteredMembers = members.filter(
     (member) =>
       member.full_name.toLowerCase().includes(search.toLowerCase()) ||
@@ -110,6 +129,12 @@ export function Dashboard() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+          <S.CleanupButton 
+            onClick={() => setShowCleanupConfirm(true)}
+            title="Limpar arquivos não utilizados"
+          >
+            <Trash size={20} />
+          </S.CleanupButton>
         </S.SearchContainer>
       </S.Header>
 
@@ -253,6 +278,17 @@ export function Dashboard() {
         onConfirm={handleDeleteMember}
         onCancel={() => setMemberToDelete(null)}
         isLoading={isDeleting}
+      />
+
+      <ConfirmationModal
+        isOpen={showCleanupConfirm}
+        title="Limpar Storage"
+        message="Tem certeza que deseja remover todos os arquivos não vinculados a membros? Esta ação não poderá ser desfeita."
+        confirmLabel="Limpar"
+        cancelLabel="Cancelar"
+        onConfirm={handleCleanupStorage}
+        onCancel={() => setShowCleanupConfirm(false)}
+        isLoading={isCleaningStorage}
       />
     </S.Container>
   );

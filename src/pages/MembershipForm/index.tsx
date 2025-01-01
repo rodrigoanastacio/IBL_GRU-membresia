@@ -12,6 +12,7 @@ import { AddressForm } from "../../components/AddressForm";
 import { membershipFormSchema, type MembershipFormData } from "./validation";
 import { createMember } from "../../services/member";
 import * as S from "./styles";
+import { useState } from 'react';
 
 const maritalStatusOptions = [
   { value: "Casado Civil", label: "Casado Civil" },

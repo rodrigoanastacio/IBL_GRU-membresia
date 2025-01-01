@@ -49,6 +49,39 @@ async function uploadFile(file: File | null | undefined, bucket: string) {
   }
 }
 
+async function removeFileFromStorage(url: string | null) {
+  if (!url) return;
+  
+  try {
+    // Se for uma URL completa do Supabase, extrair apenas o nome do arquivo
+    const fileName = url.includes('storage/v1/object/public/documents/') 
+      ? url.split('documents/').pop()
+      : url;
+
+    if (!fileName) {
+      console.error('Nome do arquivo não encontrado na URL:', url);
+      return;
+    }
+
+    console.log('Removendo arquivo:', fileName);
+
+    const { data, error } = await supabase.storage
+      .from('documents')
+      .remove([fileName]);
+
+    if (error) {
+      console.error('Erro ao remover arquivo:', error);
+      throw error;
+    }
+
+    console.log('Arquivo removido com sucesso:', fileName);
+    return data;
+  } catch (error) {
+    console.error('Erro ao processar remoção do arquivo:', error);
+    throw error;
+  }
+}
+
 export async function createMember(data: MembershipFormData) {
   try {
     console.log('Iniciando processo de criação do membro');
@@ -139,28 +172,15 @@ export async function deleteMember(id: string) {
 
     // Deletar os arquivos do storage se existirem
     if (member) {
-      const bucket = supabase.storage.from("documents");
-      
-      if (member.marriage_certificate_url) {
-        const path = member.marriage_certificate_url.split("/").pop();
-        if (path) {
-          console.log('Removendo certidão de casamento:', path);
-          const { error: removeError } = await bucket.remove([path]);
-          if (removeError) {
-            console.error("Erro ao remover certidão de casamento:", removeError);
-          }
-        }
-      }
-
-      if (member.identification_url) {
-        const path = member.identification_url.split("/").pop();
-        if (path) {
-          console.log('Removendo documento de identificação:', path);
-          const { error: removeError } = await bucket.remove([path]);
-          if (removeError) {
-            console.error("Erro ao remover documento de identificação:", removeError);
-          }
-        }
+      try {
+        // Remover arquivos em paralelo
+        await Promise.all([
+          member.marriage_certificate_url && removeFileFromStorage(member.marriage_certificate_url),
+          member.identification_url && removeFileFromStorage(member.identification_url)
+        ].filter(Boolean));
+      } catch (storageError) {
+        console.error('Erro ao remover arquivos do storage:', storageError);
+        // Continuar com a deleção do registro mesmo se falhar ao remover arquivos
       }
     }
 

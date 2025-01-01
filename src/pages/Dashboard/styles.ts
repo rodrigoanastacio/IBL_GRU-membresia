@@ -38,28 +38,50 @@ export const SearchContainer = styled.div`
   align-items: center;
   gap: 0.5rem;
   background-color: white;
-  padding: 0.75rem 1rem;
-  border-radius: 0.75rem;
   border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
   width: 100%;
   max-width: 400px;
-  transition: all 0.2s;
+  color: #6b7280;
 
-  &:focus-within {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 2px #bfdbfe;
+  svg {
+    flex-shrink: 0;
   }
 `;
 
 export const SearchInput = styled.input`
   border: none;
-  outline: none;
-  width: 100%;
+  background: none;
+  padding: 0;
   font-size: 0.875rem;
   color: #111827;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
 
   &::placeholder {
     color: #9ca3af;
+  }
+`;
+
+export const CleanupButton = styled.button`
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  color: #6b7280;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  transition: all 0.2s;
+
+  &:hover {
+    color: #dc2626;
+    background-color: #fee2e2;
   }
 `;
 
