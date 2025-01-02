@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
   * {
@@ -29,4 +29,14 @@ export const GlobalStyle = createGlobalStyle`
     opacity: 0.6;
     cursor: not-allowed;
   }
+
+  /* Custom CSS Clerk */
+  .cl-rootBox {
+    background-color: blue;
+  }
+  
+  .cl-card {
+      border: none !important;
+      box-shadow: none !important;
+    }
 `;
