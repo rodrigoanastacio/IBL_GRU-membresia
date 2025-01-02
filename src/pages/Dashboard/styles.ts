@@ -33,6 +33,10 @@ export const Subtitle = styled.p`
   margin: 0.25rem 0 0 0;
 `;
 
+export const Wrapper = styled.div`
+  display: flex;
+`;
+
 export const SearchContainer = styled.div`
   display: flex;
   align-items: center;
@@ -68,9 +72,11 @@ export const SearchInput = styled.input`
 `;
 
 export const LogoutButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-color: #0284c7;
+  color: #e5e7eb;
+  padding: 16px 24px;
+  border: none;
+  border-radius: 0.5rem;
 `;
 
 export const CleanupButton = styled.button`

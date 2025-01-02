@@ -1,5 +1,7 @@
 import { SignIn, useAuth } from "@clerk/clerk-react";
 import { Navigate } from "react-router-dom";
+import logo from "/lagoinha-gru.png";
+import * as S from "./styles";
 
 export const Login = () => {
   const { isSignedIn } = useAuth();
@@ -9,8 +11,8 @@ export const Login = () => {
   }
 
   return (
-    <div className="login-page">
-      <div className="login-page__content">
+    <S.Container>
+      <S.Wrapper>
         <SignIn
           path="/login"
           routing="path"
@@ -22,8 +24,10 @@ export const Login = () => {
             },
           }}
         />
-      </div>
-      <div className="login-page__content"></div>
-    </div>
+      </S.Wrapper>
+      <S.Wrapper>
+        <img src={logo} alt="" />
+      </S.Wrapper>
+    </S.Container>
   );
 };

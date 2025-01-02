@@ -155,22 +155,24 @@ export function Dashboard() {
           <S.Title>Dashboard de Membros</S.Title>
           <S.Subtitle>Gerencie e monitore os membros da igreja</S.Subtitle>
         </div>
-        <S.SearchContainer>
-          <Search size={20} />
-          <S.SearchInput
-            type="text"
-            placeholder="Buscar por nome ou email..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <S.CleanupButton
-            onClick={() => setShowCleanupConfirm(true)}
-            title="Limpar arquivos não utilizados"
-          >
-            <Trash size={20} />
-          </S.CleanupButton>
-        </S.SearchContainer>
-        <S.LogoutButton onClick={handleLogout}>Sair</S.LogoutButton>
+        <S.Wrapper>
+          <S.SearchContainer>
+            <Search size={20} />
+            <S.SearchInput
+              type="text"
+              placeholder="Buscar por nome ou email..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <S.CleanupButton
+              onClick={() => setShowCleanupConfirm(true)}
+              title="Limpar arquivos não utilizados"
+            >
+              <Trash size={20} />
+            </S.CleanupButton>
+          </S.SearchContainer>
+          <S.LogoutButton onClick={handleLogout}>Sair</S.LogoutButton>
+        </S.Wrapper>
       </S.Header>
 
       <S.StatsGrid>
