@@ -32,11 +32,26 @@ export const GlobalStyle = createGlobalStyle`
 
   /* Custom CSS Clerk */
   .cl-rootBox {
-    background-color: blue;
+    
+    .cl-card {
+    }
+    
+    .cl-signIn-start {
+      box-shadow: unset;
+    }
+
+    .cl-socialButtonsBlockButton {
+      box-shadow: rgba(0, 0, 0, 0.07) 0px 0px 0px 1px, rgba(0, 0, 0, 0.08) 0px 2px 3px 5px, rgba(0, 0, 0, 0.02) 0px 1px 0px 0px;
+    }
+
+    .cl-logoBox {
+      height: 100px;
+      
+      .cl-logoImage {
+        border-radius: 50%;
+      }
+    }
+
   }
   
-  .cl-card {
-      border: none !important;
-      box-shadow: none !important;
-    }
 `;

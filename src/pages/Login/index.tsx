@@ -19,7 +19,6 @@ export const Login = () => {
           appearance={{
             elements: {
               rootBox: "root-custom",
-              card: { boxShadow: "none", border: "none" },
               cardTitle: "Entrar",
               headerSubtitle:
                 "Bem-vindo de volta! Por favor, entre para continuar",
