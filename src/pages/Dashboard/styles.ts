@@ -34,7 +34,9 @@ export const Subtitle = styled.p`
 `;
 
 export const Wrapper = styled.div`
+  flex: 1;
   display: flex;
+  justify-content: space-between;
 `;
 
 export const SearchContainer = styled.div`

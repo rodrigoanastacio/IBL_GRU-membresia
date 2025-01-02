@@ -16,6 +16,7 @@ export const Login = () => {
         <SignIn
           path="/login"
           routing="path"
+          forceRedirectUrl="/dashboard"
           appearance={{
             elements: {
               rootBox: "root-custom",
