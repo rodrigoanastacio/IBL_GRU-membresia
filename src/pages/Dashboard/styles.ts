@@ -129,9 +129,10 @@ export const Table = styled.table`
   border-spacing: 0;
   min-width: 1000px;
   overflow-x: auto;
-  display: block;
+  /* display: block; */
 
-  th, td {
+  th,
+  td {
     padding: 1rem 1.5rem;
     text-align: left;
     border-bottom: 1px solid #e5e7eb;
@@ -178,8 +179,8 @@ export const StatusBadge = styled.span<StatusBadgeProps>`
   border-radius: 9999px;
   font-size: 0.75rem;
   font-weight: 500;
-  background-color: ${({ active }) => active ? '#dcfce7' : '#fee2e2'};
-  color: ${({ active }) => active ? '#16a34a' : '#dc2626'};
+  background-color: ${({ active }) => (active ? "#dcfce7" : "#fee2e2")};
+  color: ${({ active }) => (active ? "#16a34a" : "#dc2626")};
 `;
 
 export const DocumentBadges = styled.div`
