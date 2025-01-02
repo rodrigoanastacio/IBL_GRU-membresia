@@ -1,24 +1,24 @@
 import { z } from "zod";
+// TODO: Analisar para remover
+// const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+// const ACCEPTED_FILE_TYPES = [
+//   "image/jpeg",
+//   "image/jpg",
+//   "image/png",
+//   "application/pdf",
+// ];
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ACCEPTED_FILE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "application/pdf",
-];
-
-const fileSchema = z
-  .any()
-  .refine((file) => !file || file instanceof File, {
-    message: "Deve ser um arquivo válido",
-  })
-  .refine((file) => !file || file.size <= MAX_FILE_SIZE, {
-    message: "O arquivo deve ter no máximo 5MB",
-  })
-  .refine((file) => !file || ACCEPTED_FILE_TYPES.includes(file.type), {
-    message: "Tipo de arquivo não suportado. Use PDF, JPG ou PNG",
-  });
+// const fileSchema = z
+//   .any()
+//   .refine((file) => !file || file instanceof File, {
+//     message: "Deve ser um arquivo válido",
+//   })
+//   .refine((file) => !file || file.size <= MAX_FILE_SIZE, {
+//     message: "O arquivo deve ter no máximo 5MB",
+//   })
+//   .refine((file) => !file || ACCEPTED_FILE_TYPES.includes(file.type), {
+//     message: "Tipo de arquivo não suportado. Use PDF, JPG ou PNG",
+//   });
 
 export const membershipFormSchema = z.object({
   fullName: z
