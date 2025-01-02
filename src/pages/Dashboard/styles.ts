@@ -129,7 +129,6 @@ export const Table = styled.table`
   border-spacing: 0;
   min-width: 1000px;
   overflow-x: auto;
-  /* display: block; */
 
   th,
   td {
