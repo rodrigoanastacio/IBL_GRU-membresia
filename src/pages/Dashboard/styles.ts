@@ -67,6 +67,12 @@ export const SearchInput = styled.input`
   }
 `;
 
+export const LogoutButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const CleanupButton = styled.button`
   background: none;
   border: none;

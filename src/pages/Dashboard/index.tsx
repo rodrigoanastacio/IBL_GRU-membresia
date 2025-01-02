@@ -10,6 +10,7 @@ import {
   Trash2,
   Trash,
 } from "lucide-react";
+import { useClerk, useUser } from "@clerk/clerk-react";
 import { getMembers, deleteMember } from "../../services/member";
 import { cleanupOrphanedFiles } from "../../services/storage";
 import { MemberDetailsModal } from "../../components/MemberDetailsModal";
@@ -55,6 +56,9 @@ export function Dashboard() {
   const [isCleaningStorage, setIsCleaningStorage] = useState(false);
   const [showCleanupConfirm, setShowCleanupConfirm] = useState(false);
   const itemsPerPage = 10;
+
+  const { user } = useUser();
+  const { signOut } = useClerk();
 
   useEffect(() => {
     loadMembers();
@@ -114,6 +118,10 @@ export function Dashboard() {
     }
   };
 
+  const handleLogout = () => {
+    signOut();
+  };
+
   const filteredMembers = members.filter(
     (member) =>
       member.full_name.toLowerCase().includes(search.toLowerCase()) ||
@@ -162,6 +170,7 @@ export function Dashboard() {
             <Trash size={20} />
           </S.CleanupButton>
         </S.SearchContainer>
+        <S.LogoutButton onClick={handleLogout}>Sair</S.LogoutButton>
       </S.Header>
 
       <S.StatsGrid>
@@ -232,7 +241,7 @@ export function Dashboard() {
                         {member.belongs_to_gc ? "Ativo" : "Inativo"}
                       </S.StatusBadge>
                     </td>
-                    <td>{member.gc_name || '-'}</td>
+                    <td>{member.gc_name || "-"}</td>
                     <td>
                       <S.DocumentBadges>
                         {member.marriage_certificate_url && (
