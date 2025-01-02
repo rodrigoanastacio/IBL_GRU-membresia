@@ -12,5 +12,6 @@ export interface MemberFormData {
   identification?: File;
   pastoralInterviewer: string;
   belongsToGC: boolean;
+  gcName: string;
   wantsToVolunteer: boolean;
 }

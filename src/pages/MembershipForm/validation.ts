@@ -1,9 +1,15 @@
 import { z } from "zod";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ACCEPTED_FILE_TYPES = ["image/jpeg", "image/jpg", "image/png", "application/pdf"];
+const ACCEPTED_FILE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "application/pdf",
+];
 
-const fileSchema = z.any()
+const fileSchema = z
+  .any()
   .refine((file) => !file || file instanceof File, {
     message: "Deve ser um arquivo válido",
   })
@@ -45,13 +51,20 @@ export const membershipFormSchema = z.object({
     .max(2, "Use a sigla do estado"),
   profession: z.string().min(1, "Profissão é obrigatória"),
   maritalStatus: z.string().min(1, "Estado civil é obrigatório"),
-  marriageCertificate: z.instanceof(FileList).optional().or(z.instanceof(File).optional()),
-  identification: z.instanceof(FileList).optional().or(z.instanceof(File).optional()),
+  marriageCertificate: z
+    .instanceof(FileList)
+    .optional()
+    .or(z.instanceof(File).optional()),
+  identification: z
+    .instanceof(FileList)
+    .optional()
+    .or(z.instanceof(File).optional()),
   pastoralInterviewer: z
     .string()
     .min(3, "Nome do entrevistador deve ter no mínimo 3 caracteres")
     .max(100, "Nome do entrevistador deve ter no máximo 100 caracteres"),
   belongsToGC: z.boolean(),
+  gcName: z.string().optional(),
   wantsToVolunteer: z.boolean(),
 });
 

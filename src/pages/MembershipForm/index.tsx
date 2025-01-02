@@ -12,7 +12,6 @@ import { AddressForm } from "../../components/AddressForm";
 import { membershipFormSchema, type MembershipFormData } from "./validation";
 import { createMember } from "../../services/member";
 import * as S from "./styles";
-import { useState } from 'react';
 
 const maritalStatusOptions = [
   { value: "Casado Civil", label: "Casado Civil" },
@@ -27,6 +26,40 @@ const volunteerOptions = [
   { value: false, label: "Não" },
 ];
 
+const registeredGCs = [
+  "GC Alternativo",
+  "GC Bela Vista",
+  "GC Centro I",
+  "GC Centro II",
+  "GC Centro III",
+  "GC Centro IV",
+  "GC Continental",
+  "GC Cumbica",
+  "GC de Casais",
+  "GC Delas",
+  "GC Delas Centro",
+  "GC Delas Vila Galvão",
+  "GC Espaço Azul",
+  "GC Flôr da Montanha",
+  "GC Gopoúva",
+  "GC Gopoúva",
+  "GC Jardim Marilena",
+  "GC Jardim Pinhal",
+  "GC Jardim Presidente Dutra II",
+  "GC Jardim Rossi",
+  "GC Jardim São João",
+  "GC Jurema",
+  "GC Legacy",
+  "GC Legacy Universitário I",
+  "GC Legacy UP",
+  "GC Misto",
+  "GC Mulheres Sábias",
+  "GC Parque Piratininga",
+  "GC Parque Primavera",
+  "GC Picanço",
+  "GC Ponte Alta",
+];
+
 export function MembershipForm() {
   const methods = useForm<MembershipFormData>({
     resolver: zodResolver(membershipFormSchema),
@@ -39,6 +72,8 @@ export function MembershipForm() {
     setValue,
     formState: { errors, isSubmitting },
   } = methods;
+
+  const belongsToGC = watch("belongsToGC");
 
   const onSubmit = async (data: MembershipFormData) => {
     try {
@@ -149,6 +184,19 @@ export function MembershipForm() {
             />
 
             <Checkbox label="Pertence ao GC" {...register("belongsToGC")} />
+
+            {belongsToGC && (
+              <Select
+                label="Selecione o GC"
+                options={registeredGCs.map((title) => ({
+                  value: title,
+                  label: title,
+                }))}
+                {...register("gcName")}
+                error={errors.gcName?.message}
+              />
+            )}
+
             <RadioGroup
               label="Deseja participar do Giro de Voluntários?"
               options={volunteerOptions}

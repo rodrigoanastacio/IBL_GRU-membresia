@@ -1,6 +1,6 @@
 import { supabase } from "../lib/supabase";
 import { MembershipFormData } from "../pages/MembershipForm/validation";
-import imageCompression from 'browser-image-compression';
+import imageCompression from "browser-image-compression";
 
 const compressionOptions = {
   maxSizeMB: 1,
@@ -9,26 +9,26 @@ const compressionOptions = {
 };
 
 async function compressImageIfNeeded(file: File): Promise<File> {
-  if (!file.type.startsWith('image/')) {
+  if (!file.type.startsWith("image/")) {
     return file;
   }
 
   try {
     return await imageCompression(file, compressionOptions);
   } catch (error) {
-    console.error('Error compressing image:', error);
+    console.error("Error compressing image:", error);
     return file;
   }
 }
 
 async function uploadFile(file: File | null | undefined, bucket: string) {
   if (!file) return null;
-  
+
   try {
     // Comprimir a imagem antes do upload
     const fileToUpload = await compressImageIfNeeded(file);
-    
-    const fileExt = file.name.split('.').pop();
+
+    const fileExt = file.name.split(".").pop();
     const fileName = `${Math.random()}.${fileExt}`;
     const filePath = `${fileName}`;
 
@@ -38,68 +38,70 @@ async function uploadFile(file: File | null | undefined, bucket: string) {
 
     if (uploadError) throw uploadError;
 
-    const { data: { publicUrl } } = supabase.storage
-      .from(bucket)
-      .getPublicUrl(filePath);
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from(bucket).getPublicUrl(filePath);
 
     return publicUrl;
   } catch (error) {
-    console.error('Error uploading file:', error);
+    console.error("Error uploading file:", error);
     return null;
   }
 }
 
 async function removeFileFromStorage(url: string | null) {
   if (!url) return;
-  
+
   try {
     // Se for uma URL completa do Supabase, extrair apenas o nome do arquivo
-    const fileName = url.includes('storage/v1/object/public/documents/') 
-      ? url.split('documents/').pop()
+    const fileName = url.includes("storage/v1/object/public/documents/")
+      ? url.split("documents/").pop()
       : url;
 
     if (!fileName) {
-      console.error('Nome do arquivo não encontrado na URL:', url);
+      console.error("Nome do arquivo não encontrado na URL:", url);
       return;
     }
 
-    console.log('Removendo arquivo:', fileName);
+    console.log("Removendo arquivo:", fileName);
 
     const { data, error } = await supabase.storage
-      .from('documents')
+      .from("documents")
       .remove([fileName]);
 
     if (error) {
-      console.error('Erro ao remover arquivo:', error);
+      console.error("Erro ao remover arquivo:", error);
       throw error;
     }
 
-    console.log('Arquivo removido com sucesso:', fileName);
+    console.log("Arquivo removido com sucesso:", fileName);
     return data;
   } catch (error) {
-    console.error('Erro ao processar remoção do arquivo:', error);
+    console.error("Erro ao processar remoção do arquivo:", error);
     throw error;
   }
 }
 
 export async function createMember(data: MembershipFormData) {
   try {
-    console.log('Iniciando processo de criação do membro');
+    console.log("Iniciando processo de criação do membro");
 
-    const marriageCertificateFile = data.marriageCertificate instanceof FileList 
-      ? data.marriageCertificate[0] 
-      : data.marriageCertificate as File;
+    const marriageCertificateFile =
+      data.marriageCertificate instanceof FileList
+        ? data.marriageCertificate[0]
+        : (data.marriageCertificate as File);
 
-    const identificationFile = data.identification instanceof FileList 
-      ? data.identification[0] 
-      : data.identification as File;
+    const identificationFile =
+      data.identification instanceof FileList
+        ? data.identification[0]
+        : (data.identification as File);
 
     const [marriageCertificateUrl, identificationUrl] = await Promise.all([
-      uploadFile(marriageCertificateFile, 'documents'),
-      uploadFile(identificationFile, 'documents')
+      uploadFile(marriageCertificateFile, "documents"),
+      uploadFile(identificationFile, "documents"),
     ]);
 
-    console.log('Arquivos carregados com sucesso');
+    console.log("Arquivos carregados com sucesso");
 
     const { error } = await supabase.from("members").insert([
       {
@@ -115,6 +117,7 @@ export async function createMember(data: MembershipFormData) {
         identification_url: identificationUrl,
         pastoral_interviewer: data.pastoralInterviewer,
         belongs_to_gc: data.belongsToGC,
+        gc_name: data.gcName,
         wants_to_volunteer: data.wantsToVolunteer,
         cep: data.cep,
         street: data.street,
@@ -128,15 +131,15 @@ export async function createMember(data: MembershipFormData) {
 
     if (error) throw error;
 
-    console.log('Membro criado com sucesso');
+    console.log("Membro criado com sucesso");
   } catch (error) {
-    console.error('Error creating member:', error);
+    console.error("Error creating member:", error);
     throw error;
   }
 }
 
 export async function getMembers() {
-  console.log('Buscando membros');
+  console.log("Buscando membros");
 
   const { data, error } = await supabase
     .from("members")
@@ -148,13 +151,13 @@ export async function getMembers() {
     throw error;
   }
 
-  console.log('Membros encontrados com sucesso');
+  console.log("Membros encontrados com sucesso");
   return data;
 }
 
 export async function deleteMember(id: string) {
   try {
-    console.log('Iniciando processo de exclusão do membro:', id);
+    console.log("Iniciando processo de exclusão do membro:", id);
 
     // Primeiro, buscar o membro para pegar as URLs dos documentos
     const { data: member, error: fetchError } = await supabase
@@ -168,34 +171,40 @@ export async function deleteMember(id: string) {
       throw fetchError;
     }
 
-    console.log('Membro encontrado:', member);
+    console.log("Membro encontrado:", member);
 
     // Deletar os arquivos do storage se existirem
     if (member) {
       try {
         // Remover arquivos em paralelo
-        await Promise.all([
-          member.marriage_certificate_url && removeFileFromStorage(member.marriage_certificate_url),
-          member.identification_url && removeFileFromStorage(member.identification_url)
-        ].filter(Boolean));
+        await Promise.all(
+          [
+            member.marriage_certificate_url &&
+              removeFileFromStorage(member.marriage_certificate_url),
+            member.identification_url &&
+              removeFileFromStorage(member.identification_url),
+          ].filter(Boolean)
+        );
       } catch (storageError) {
-        console.error('Erro ao remover arquivos do storage:', storageError);
+        console.error("Erro ao remover arquivos do storage:", storageError);
         // Continuar com a deleção do registro mesmo se falhar ao remover arquivos
       }
     }
 
-    console.log('Iniciando remoção do registro no banco...');
+    console.log("Iniciando remoção do registro no banco...");
 
     // Deletar o registro da tabela usando RPC
-    const { data: deleteData, error: deleteError } = await supabase
-      .rpc('delete_member', { member_id: id });
+    const { data: deleteData, error: deleteError } = await supabase.rpc(
+      "delete_member",
+      { member_id: id }
+    );
 
     if (deleteError) {
       console.error("Erro ao deletar membro:", deleteError);
       throw deleteError;
     }
 
-    console.log('Registro deletado com sucesso:', deleteData);
+    console.log("Registro deletado com sucesso:", deleteData);
     return true;
   } catch (error) {
     console.error("Erro ao processar exclusão:", error);

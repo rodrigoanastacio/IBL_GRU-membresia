@@ -25,6 +25,7 @@ interface Member {
   phone: string;
   city: string;
   belongs_to_gc: boolean;
+  gc_name?: string;
   marriage_certificate_url?: string;
   identification_url?: string;
   created_at: string;
@@ -191,71 +192,69 @@ export function Dashboard() {
           </S.TableHeader>
 
           <S.TableWrapper>
-
-          
-
-          <S.Table>
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>Telefone</th>
-                <th>Cidade</th>
-                <th>Status GC</th>
-                <th>Documentos</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {paginatedMembers.map((member) => (
-                <tr key={member.id}>
-                  <td>
-                    <S.MemberName>{member.full_name}</S.MemberName>
-                  </td>
-                  <td>{member.email}</td>
-                  <td>{member.phone}</td>
-                  <td>{member.city}</td>
-                  <td>
-                    <S.StatusBadge active={member.belongs_to_gc}>
-                      {member.belongs_to_gc ? "Ativo" : "Inativo"}
-                    </S.StatusBadge>
-                  </td>
-                  <td>
-                    <S.DocumentBadges>
-                      {member.marriage_certificate_url && (
-                        <S.DocumentBadge title="Certidão de Casamento">
-                          Certidão
-                        </S.DocumentBadge>
-                      )}
-                      {member.identification_url && (
-                        <S.DocumentBadge title="Documento de Identificação">
-                          RG/CNH
-                        </S.DocumentBadge>
-                      )}
-                    </S.DocumentBadges>
-                  </td>
-                  <td>
-                    <S.ActionButtons>
-                      <S.ActionButton
-                        onClick={() => setSelectedMember(member)}
-                        title="Ver detalhes"
-                      >
-                        <Eye size={18} />
-                      </S.ActionButton>
-                      <S.ActionButton
-                        onClick={() => setMemberToDelete(member)}
-                        title="Excluir membro"
-                        className="delete"
-                      >
-                        <Trash2 size={18} />
-                      </S.ActionButton>
-                    </S.ActionButtons>
-                  </td>
+            <S.Table>
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Email</th>
+                  <th>Telefone</th>
+                  <th>Cidade</th>
+                  <th>Status GC</th>
+                  <th>GC Selecionado</th>
+                  <th>Documentos</th>
+                  <th>Ações</th>
                 </tr>
-              ))}
-            </tbody>
-          </S.Table>
-
+              </thead>
+              <tbody>
+                {paginatedMembers.map((member) => (
+                  <tr key={member.id}>
+                    <td>
+                      <S.MemberName>{member.full_name}</S.MemberName>
+                    </td>
+                    <td>{member.email}</td>
+                    <td>{member.phone}</td>
+                    <td>{member.city}</td>
+                    <td>
+                      <S.StatusBadge active={member.belongs_to_gc}>
+                        {member.belongs_to_gc ? "Ativo" : "Inativo"}
+                      </S.StatusBadge>
+                    </td>
+                    <td>{member.gc_name || '-'}</td>
+                    <td>
+                      <S.DocumentBadges>
+                        {member.marriage_certificate_url && (
+                          <S.DocumentBadge title="Certidão de Casamento">
+                            Certidão
+                          </S.DocumentBadge>
+                        )}
+                        {member.identification_url && (
+                          <S.DocumentBadge title="Documento de Identificação">
+                            RG/CNH
+                          </S.DocumentBadge>
+                        )}
+                      </S.DocumentBadges>
+                    </td>
+                    <td>
+                      <S.ActionButtons>
+                        <S.ActionButton
+                          onClick={() => setSelectedMember(member)}
+                          title="Ver detalhes"
+                        >
+                          <Eye size={18} />
+                        </S.ActionButton>
+                        <S.ActionButton
+                          onClick={() => setMemberToDelete(member)}
+                          title="Excluir membro"
+                          className="delete"
+                        >
+                          <Trash2 size={18} />
+                        </S.ActionButton>
+                      </S.ActionButtons>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </S.Table>
           </S.TableWrapper>
 
           <S.Pagination>
