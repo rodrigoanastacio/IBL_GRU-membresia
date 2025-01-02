@@ -21,13 +21,26 @@ import * as S from "./styles";
 interface Member {
   id: string;
   full_name: string;
-  email: string;
+  birth_date: string;
+  baptism_date: string;
+  baptism_church: string;
   phone: string;
+  email: string;
+  street: string;
+  number: string;
+  complement?: string;
+  neighborhood: string;
   city: string;
-  belongs_to_gc: boolean;
-  gc_name?: string;
+  state: string;
+  cep: string;
+  profession: string;
+  marital_status: string;
   marriage_certificate_url?: string;
   identification_url?: string;
+  pastoral_interviewer: string;
+  belongs_to_gc: boolean;
+  gc_name?: string;
+  wants_to_volunteer: boolean;
   created_at: string;
 }
 
