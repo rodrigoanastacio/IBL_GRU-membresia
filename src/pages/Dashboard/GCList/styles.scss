@@ -1,0 +1,87 @@
+.p-gc-list {
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    color: #1e293b;
+  }
+
+  &__new-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #fece00;
+    color: #1e293b;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: darken(#fece00, 5%);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    &:focus-visible {
+      outline: 2px solid #fece00;
+      outline-offset: 2px;
+    }
+
+    svg {
+      font-size: 1.25rem;
+    }
+  }
+
+  &__filters {
+    margin-bottom: 2rem;
+  }
+
+  &__table {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid #e3e9f0;
+    }
+
+    th {
+      background: #f8f9fa;
+      font-weight: 600;
+      color: #64748b;
+    }
+  }
+
+  &__button {
+    padding: 0.5rem 1rem;
+    background: #fece00;
+    border: none;
+    border-radius: 4px;
+    color: #362a25;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}

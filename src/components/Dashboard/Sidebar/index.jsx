@@ -44,6 +44,15 @@ export const Sidebar = ({ isMobile, onLinkClick }) => {
 
         <div className="c-sidebar__section">
           <span className="c-sidebar__section-title">Gerenciar</span>
+          <NavLink
+            to="/dashboard/membros"
+            className="c-sidebar__link"
+            end
+            onClick={handleClick}
+          >
+            <RiDashboardLine aria-hidden="true" />
+            <span>Membresia</span>
+          </NavLink>
         </div>
 
         <div className="c-sidebar__section">

@@ -3,13 +3,20 @@ import { MembershipForm } from "./pages/MembershipForm";
 import { Login } from "./pages/Login";
 import { useAuth } from "@clerk/clerk-react";
 import { DashboardLayout } from "./Layouts/DashboardLayout";
+import { GCList } from "./pages/Dashboard/GCList";
+import { MembersList } from "./pages/Dashboard/MembersList/indes";
+import { Dashboard } from "./pages/Dashboard";
 
 export function Router() {
   return (
     <Routes>
       <Route path="/" element={<MembershipForm />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<ProtectedRoute />} />
+      <Route path="/dashboard" element={<ProtectedRoute />}>
+        {/* <Route index element={<Dashboard />} /> */}
+        <Route path="gcs" element={<GCList />} />
+        <Route path="membros" element={<MembersList />} />
+      </Route>
     </Routes>
   );
 }

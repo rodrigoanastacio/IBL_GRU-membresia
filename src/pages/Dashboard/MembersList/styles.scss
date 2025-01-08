@@ -1,0 +1,22 @@
+.l-members-list {
+
+  &__header {
+    margin-bottom: 48px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__title {
+    font-size: 1.875rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+  }
+
+  &__subtitle {
+    color: #6b7280;
+    margin: 0.25rem 0 0 0;
+  }
+}

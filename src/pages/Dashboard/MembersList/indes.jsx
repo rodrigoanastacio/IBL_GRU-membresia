@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Search,
   ChevronLeft,
@@ -10,56 +10,20 @@ import {
   Trash2,
   Trash,
 } from "lucide-react";
-import { useClerk, useUser } from "@clerk/clerk-react";
-import { getMembers, deleteMember } from "../../services/member";
-import { cleanupOrphanedFiles } from "../../services/storage";
-import { MemberDetailsModal } from "../../components/MemberDetailsModal";
-import { StorageUsageCard } from "../../components/StorageUsageCard";
-import { StatsCard } from "../../components/StatsCard";
-import { ConfirmationModal } from "../../components/ConfirmationModal";
-import * as S from "./styles";
-import { Sidebar } from "../../components/Dashboard/Sidebar";
+import { getMembers, deleteMember } from "./../../../services/member";
+import * as S from "./../styles";
+import "./styles.scss";
+import { MemberDetailsModal } from "../../../components/MemberDetailsModal";
 
-interface Member {
-  id: string;
-  full_name: string;
-  birth_date: string;
-  baptism_date: string;
-  baptism_church: string;
-  phone: string;
-  email: string;
-  street: string;
-  number: string;
-  complement?: string;
-  neighborhood: string;
-  city: string;
-  state: string;
-  cep: string;
-  profession: string;
-  marital_status: string;
-  marriage_certificate_url?: string;
-  identification_url?: string;
-  pastoral_interviewer: string;
-  belongs_to_gc: boolean;
-  gc_name?: string;
-  wants_to_volunteer: boolean;
-  created_at: string;
-}
-
-export function Dashboard() {
-  const [members, setMembers] = useState<Member[]>([]);
+export const MembersList = () => {
   const [loading, setLoading] = useState(true);
+  const [members, setMembers] = useState([]);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedMember, setSelectedMember] = useState<Member | null>(null);
-  const [memberToDelete, setMemberToDelete] = useState<Member | null>(null);
+  const [selectedMember, setSelectedMember] = useState(null);
+  const [memberToDelete, setMemberToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [isCleaningStorage, setIsCleaningStorage] = useState(false);
-  const [showCleanupConfirm, setShowCleanupConfirm] = useState(false);
   const itemsPerPage = 10;
-
-  const { user } = useUser();
-  const { signOut } = useClerk();
 
   useEffect(() => {
     loadMembers();
@@ -103,26 +67,6 @@ export function Dashboard() {
     }
   };
 
-  const handleCleanupStorage = async () => {
-    try {
-      setIsCleaningStorage(true);
-      const result = await cleanupOrphanedFiles();
-      console.log("Resultado da limpeza:", result);
-
-      // Recarregar dados após limpeza
-      await loadMembers();
-      setShowCleanupConfirm(false);
-    } catch (error) {
-      console.error("Erro ao limpar storage:", error);
-    } finally {
-      setIsCleaningStorage(false);
-    }
-  };
-
-  const handleLogout = () => {
-    signOut();
-  };
-
   const filteredMembers = members.filter(
     (member) =>
       member.full_name.toLowerCase().includes(search.toLowerCase()) ||
@@ -131,32 +75,21 @@ export function Dashboard() {
 
   const totalPages = Math.ceil(filteredMembers.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
+
   const paginatedMembers = filteredMembers.slice(
     startIndex,
     startIndex + itemsPerPage
   );
 
-  // Calcular estatísticas
-  const totalMembers = members.length;
-  const newMembersThisMonth = members.filter((member) => {
-    const memberDate = new Date(member.created_at);
-    const today = new Date();
-    return (
-      memberDate.getMonth() === today.getMonth() &&
-      memberDate.getFullYear() === today.getFullYear()
-    );
-  }).length;
-
-  const activeMembers = members.filter((member) => member.belongs_to_gc).length;
-
   return (
-    <S.Container>
-      <S.Header>
-        <div>
-          <S.Title>Dashboard de Membros</S.Title>
-          <S.Subtitle>Gerencie e monitore os membros da igreja</S.Subtitle>
+    <section className="l-members-list">
+      <header className="l-members-list__header">
+        <div className="l-members-list__headline">
+          <h2 className="l-members-list__title">Membresia</h2>
+          <p className="l-members-list__subtitle">
+            Gerencie e monitore os membros da igreja
+          </p>
         </div>
-        {/* <S.Wrapper> */}
         <S.SearchContainer>
           <Search size={20} />
           <S.SearchInput
@@ -174,35 +107,7 @@ export function Dashboard() {
               <Trash size={20} />
             </S.CleanupButton> */}
         </S.SearchContainer>
-        <S.LogoutButton onClick={handleLogout}>Sair</S.LogoutButton>
-        {/* </S.Wrapper> */}
-      </S.Header>
-
-      <S.StatsGrid>
-        <StorageUsageCard />
-        <StatsCard
-          title="Total de Membros"
-          value={totalMembers}
-          description="Total de membros cadastrados"
-          icon={Users}
-          color="blue"
-        />
-        <StatsCard
-          title="Novos Membros"
-          value={newMembersThisMonth}
-          description="Novos membros este mês"
-          icon={UserPlus}
-          color="green"
-          trend={{ value: 12, isPositive: true }}
-        />
-        <StatsCard
-          title="Membros Ativos"
-          value={activeMembers}
-          description="Membros participando de GCs"
-          icon={UserCheck}
-          color="yellow"
-        />
-      </S.StatsGrid>
+      </header>
 
       {loading ? (
         <S.LoadingContainer>
@@ -312,28 +217,12 @@ export function Dashboard() {
           onClose={() => setSelectedMember(null)}
         />
       )}
-
-      <ConfirmationModal
-        isOpen={!!memberToDelete}
-        title="Excluir membro"
-        message={`Tem certeza que deseja excluir o membro "${memberToDelete?.full_name}"? Esta ação não poderá ser desfeita e todos os documentos associados serão removidos.`}
-        confirmLabel="Excluir"
-        cancelLabel="Cancelar"
-        onConfirm={handleDeleteMember}
-        onCancel={() => setMemberToDelete(null)}
-        isLoading={isDeleting}
-      />
-
-      <ConfirmationModal
-        isOpen={showCleanupConfirm}
-        title="Limpar Storage"
-        message="Tem certeza que deseja remover todos os arquivos não vinculados a membros? Esta ação não poderá ser desfeita."
-        confirmLabel="Limpar"
-        cancelLabel="Cancelar"
-        onConfirm={handleCleanupStorage}
-        onCancel={() => setShowCleanupConfirm(false)}
-        isLoading={isCleaningStorage}
-      />
-    </S.Container>
+    </section>
   );
+};
+{
+  /* <div>
+  <S.Title>Lista de Membros</S.Title>
+  <S.Subtitle>Gerencie e monitore os membros da igreja</S.Subtitle>
+</div>; */
 }
