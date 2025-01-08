@@ -4,7 +4,7 @@ import { Login } from "./pages/Login";
 import { useAuth } from "@clerk/clerk-react";
 import { DashboardLayout } from "./Layouts/DashboardLayout";
 import { GCList } from "./pages/Dashboard/GCList";
-import { MembersList } from "./pages/Dashboard/MembersList/indes";
+import { MembersList } from "./pages/Dashboard/MembersList";
 import { Dashboard } from "./pages/Dashboard";
 
 export function Router() {

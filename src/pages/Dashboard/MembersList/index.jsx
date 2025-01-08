@@ -10,8 +10,8 @@ import {
   Trash2,
   Trash,
 } from "lucide-react";
-import { getMembers, deleteMember } from "./../../../services/member";
-import * as S from "./../styles";
+import { getMembers, deleteMember } from "../../../services/member";
+import * as S from "../styles";
 import "./styles.scss";
 import { MemberDetailsModal } from "../../../components/MemberDetailsModal";
 import { ConfirmationModal } from "../../../components/ConfirmationModal";
