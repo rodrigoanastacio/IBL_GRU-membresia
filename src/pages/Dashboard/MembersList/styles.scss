@@ -4,8 +4,22 @@
     margin-bottom: 48px;
 
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+
+    @media (min-width: 769px) {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  &__headline {
+    margin-bottom: 24px;
+
+    @media (min-width: 769px) {
+      margin-bottom: initial;
+    }
   }
 
   &__title {
