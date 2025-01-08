@@ -18,6 +18,7 @@ import { StorageUsageCard } from "../../components/StorageUsageCard";
 import { StatsCard } from "../../components/StatsCard";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import * as S from "./styles";
+import { Sidebar } from "../../components/Dashboard/Sidebar";
 
 interface Member {
   id: string;

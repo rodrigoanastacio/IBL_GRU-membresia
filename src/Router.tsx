@@ -1,8 +1,8 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { MembershipForm } from "./pages/MembershipForm";
-import { Dashboard } from "./pages/Dashboard";
 import { Login } from "./pages/Login";
 import { useAuth } from "@clerk/clerk-react";
+import { DashboardLayout } from "./Layouts/DashboardLayout";
 
 export function Router() {
   return (
@@ -21,5 +21,5 @@ const ProtectedRoute = () => {
     return <Navigate to="/login" />;
   }
 
-  return <Dashboard />;
+  return <DashboardLayout />;
 };
