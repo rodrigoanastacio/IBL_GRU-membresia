@@ -13,7 +13,7 @@ export function Router() {
       <Route path="/" element={<MembershipForm />} />
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<ProtectedRoute />}>
-        {/* <Route index element={<Dashboard />} /> */}
+        <Route index element={<Dashboard />} />
         <Route path="gcs" element={<GCList />} />
         <Route path="membros" element={<MembersList />} />
       </Route>

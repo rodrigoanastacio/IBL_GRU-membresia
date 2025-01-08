@@ -14,6 +14,7 @@ import { getMembers, deleteMember } from "./../../../services/member";
 import * as S from "./../styles";
 import "./styles.scss";
 import { MemberDetailsModal } from "../../../components/MemberDetailsModal";
+import { ConfirmationModal } from "../../../components/ConfirmationModal";
 
 export const MembersList = () => {
   const [loading, setLoading] = useState(true);
@@ -217,12 +218,17 @@ export const MembersList = () => {
           onClose={() => setSelectedMember(null)}
         />
       )}
+
+      <ConfirmationModal
+        isOpen={!!memberToDelete}
+        title="Excluir membro"
+        message={`Tem certeza que deseja excluir o membro "${memberToDelete?.full_name}"? Esta ação não poderá ser desfeita e todos os documentos associados serão removidos.`}
+        confirmLabel="Excluir"
+        cancelLabel="Cancelar"
+        onConfirm={handleDeleteMember}
+        onCancel={() => setMemberToDelete(null)}
+        isLoading={isDeleting}
+      />
     </section>
   );
 };
-{
-  /* <div>
-  <S.Title>Lista de Membros</S.Title>
-  <S.Subtitle>Gerencie e monitore os membros da igreja</S.Subtitle>
-</div>; */
-}

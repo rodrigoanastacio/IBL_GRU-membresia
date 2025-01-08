@@ -5,12 +5,19 @@ import {
   RiLogoutBoxLine,
   RiSettings4Line,
 } from "react-icons/ri";
+import { useClerk, useUser } from "@clerk/clerk-react";
 
 import "./styles.scss";
 
 export const Sidebar = ({ isMobile, onLinkClick }) => {
+  const { signOut } = useClerk();
+
   const handleClick = () => {
     if (onLinkClick) onLinkClick();
+  };
+
+  const handleLogout = () => {
+    signOut();
   };
 
   return (
@@ -68,7 +75,7 @@ export const Sidebar = ({ isMobile, onLinkClick }) => {
         </div>
       </nav>
 
-      <button className="c-sidebar__logout">
+      <button className="c-sidebar__logout" onClick={handleLogout}>
         <RiLogoutBoxLine />
         <span>Sair</span>
       </button>
