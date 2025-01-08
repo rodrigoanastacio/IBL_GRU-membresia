@@ -8,16 +8,17 @@ import {
 
 import "./styles.scss";
 
-export const Sidebar = ({ onLinkClick }) => {
+export const Sidebar = ({ isMobile, onLinkClick }) => {
   const handleClick = () => {
     if (onLinkClick) onLinkClick();
   };
 
   return (
-    <aside className="c-sidebar">
+    <aside className={`c-sidebar ${isMobile ? "c-sidebar--mobile" : ""}`}>
       <div className="c-sidebar__logo">
         <img src="/logo-lagoinha-white.svg" alt="Logo GC" />
       </div>
+
       <nav className="c-sidebar__nav" role="navigation">
         <div className="c-sidebar__section">
           <span className="c-sidebar__section-title">Menu</span>
