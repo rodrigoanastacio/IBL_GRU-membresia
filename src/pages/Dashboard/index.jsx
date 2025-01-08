@@ -9,10 +9,11 @@ export function Dashboard() {
   const [isCleaningStorage, setIsCleaningStorage] = useState(false);
   const [showCleanupConfirm, setShowCleanupConfirm] = useState(false);
 
-  // const { user } = useUser();
+  const { user } = useUser();
   const { signOut } = useClerk();
 
-  // console.log("User:::: ", user.firstName);
+  console.log("User:::: ", user);
+  console.log("User:::: ", user.imageUrl);
 
   const handleCleanupStorage = async () => {
     try {

@@ -1,7 +1,10 @@
+import { useUser } from "@clerk/clerk-react";
 import { RiNotificationLine, RiMenuLine } from "react-icons/ri";
 import "./styles.scss";
 
 export const Header = ({ onToggleSidebar }) => {
+  const { user } = useUser();
+
   return (
     <header className="c-dashboard-header">
       <div className="c-dashboard-header__content">
@@ -24,16 +27,16 @@ export const Header = ({ onToggleSidebar }) => {
 
           <div className="c-dashboard-header__profile">
             <img
-              src="https://github.com/rodrigoanastacio.png"
+              src={user.imageUrl}
               alt="Foto do usuário"
               className="c-dashboard-header__avatar"
             />
             <div className="c-dashboard-header__user-info">
               <span className="c-dashboard-header__user-name">
-                Rodrigo Anastácio
+                {user.fullName}
               </span>
               <span className="c-dashboard-header__user-role">
-                Administrador
+                {user.organizationMemberships[0].role}
               </span>
             </div>
           </div>
