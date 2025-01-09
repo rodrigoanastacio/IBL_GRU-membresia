@@ -1,0 +1,12 @@
+.c-gc-map {
+  height: auto;
+  min-height: 400px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e3e9f0;
+
+  .leaflet-container {
+    height: 100%;
+    width: 100%;
+  }
+}

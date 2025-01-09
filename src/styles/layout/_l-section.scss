@@ -1,0 +1,17 @@
+@use "./../abstracts/mixins" as m;
+
+.l-section {
+  padding: 5rem 0;
+
+  &__container {
+    @include m.container();
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(auto-fit, minmax(24.1875rem, 1fr));
+    }
+  }
+}

@@ -1,0 +1,45 @@
+.c-cep-search {
+  max-width: 400px;
+  margin: 0 auto;
+
+  &__field {
+    display: flex;
+    gap: 0.5rem;
+
+    input {
+      flex: 1;
+      padding: 0.75rem;
+      border: 1px solid #e3e9f0;
+      border-radius: 8px;
+      font-family: inherit;
+
+      &:focus {
+        outline: none;
+        border-color: #fece00;
+        box-shadow: 0 0 0 2px rgba(254, 206, 0, 0.1);
+      }
+    }
+
+    button {
+      padding: 0.75rem 1.5rem;
+      background: #fece00;
+      border: none;
+      border-radius: 8px;
+      color: #362a25;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+
+  &__error {
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+}

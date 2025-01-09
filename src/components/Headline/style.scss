@@ -1,0 +1,14 @@
+.c-title {
+  width: 100%;
+  color: #ffffff;
+  font-size: 3rem;
+  line-height: 3.5rem;
+  text-align: center;
+
+  @media (min-width: 768px) {
+    font-size: 3.5rem;
+    line-height: 4.125rem;
+    max-width: 40rem;
+    text-align: left;
+  }
+}

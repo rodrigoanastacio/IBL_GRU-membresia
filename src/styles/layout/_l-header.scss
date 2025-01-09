@@ -1,0 +1,30 @@
+@use "./../abstracts/mixins" as m;
+
+.l-header {
+  padding: 1rem 0;
+  background: url("/hero-bg.svg") center / cover no-repeat;
+  height: 450px;
+
+  &__container {
+    @include m.container();
+
+    display: grid;
+    row-gap: 2.5rem;
+  }
+
+  &__brand {
+    @include m.flex-element(row, center, space-between);
+  }
+
+  &__logo {
+    display: block;
+    height: 40px;
+  }
+
+  &__headline {
+    min-height: 15.375rem;
+
+    display: flex;
+    align-items: center;
+  }
+}

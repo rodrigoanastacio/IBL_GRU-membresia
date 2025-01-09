@@ -6,11 +6,13 @@ import { DashboardLayout } from "./Layouts/DashboardLayout";
 import { GCList } from "./pages/Dashboard/GCList";
 import { MembersList } from "./pages/Dashboard/MembersList";
 import { Dashboard } from "./pages/Dashboard";
+import { NearestGC } from "./pages/NearestGC";
 
 export function Router() {
   return (
     <Routes>
       <Route path="/" element={<MembershipForm />} />
+      <Route path="/encontrar-gc" element={<NearestGC />} />
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<ProtectedRoute />}>
         <Route index element={<Dashboard />} />
