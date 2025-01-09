@@ -12,6 +12,7 @@ import { AddressForm } from "../../components/AddressForm";
 import { membershipFormSchema, type MembershipFormData } from "./validation";
 import { checkEmailExists, createMember } from "../../services/member";
 import * as S from "./styles";
+import { AnimatePresence, motion } from "framer-motion";
 
 const maritalStatusOptions = [
   { value: "Casado Civil", label: "Casado Civil" },
@@ -77,6 +78,7 @@ export function MembershipForm() {
   } = methods;
 
   const belongsToGC = watch("belongsToGC");
+  const maritalStatus = watch("maritalStatus");
 
   const onSubmit = async (data: MembershipFormData) => {
     try {
@@ -114,6 +116,11 @@ export function MembershipForm() {
       return true; // Permite continuar em caso de erro na validação
     }
   };
+
+  const showMarriageCertificate =
+    maritalStatus === "Casado Civil" ||
+    maritalStatus === "Casado Civil e Religioso" ||
+    maritalStatus === "Divorciado(a)";
 
   return (
     <S.Container>
@@ -199,13 +206,24 @@ export function MembershipForm() {
               />
             </S.Row>
 
-            <FileUpload
-              label="Certidão de Casamento"
-              subtitle="Ou Averbação de Divórcio"
-              accept=".pdf,.jpg,.jpeg,.png"
-              {...register("marriageCertificate")}
-              error={errors.marriageCertificate?.message}
-            />
+            <AnimatePresence>
+              {showMarriageCertificate && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                >
+                  <FileUpload
+                    label="Certidão de Casamento"
+                    subtitle="Ou Averbação de Divórcio"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    {...register("marriageCertificate")}
+                    error={errors.marriageCertificate?.message}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <FileUpload
               label="RG ou CNH"
