@@ -57,8 +57,16 @@ export const membershipFormSchema = z.object({
     .or(z.instanceof(File).optional()),
   identification: z
     .instanceof(FileList)
-    .optional()
-    .or(z.instanceof(File).optional()),
+    .refine((files) => files && files.length > 0, {
+      message: "O arquivo de RG ou CNH é obrigatório", // Mensagem de erro
+    }),
+  // .or(
+  //   z
+  //     .instanceof(File)
+  //     .refine((file) => file instanceof File && file.size > 0, {
+  //       message: "O arquivo de RG ou CNH é obrigatório", // Mensagem de erro
+  //     })
+  // ),
   pastoralInterviewer: z
     .string()
     .min(3, "Nome do entrevistador deve ter no mínimo 3 caracteres")
