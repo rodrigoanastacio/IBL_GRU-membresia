@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import {
+  RiExternalLinkFill,
   RiDashboardLine,
   RiGroupLine,
   RiLogoutBoxLine,
@@ -28,7 +29,30 @@ export const Sidebar = ({ isMobile, onLinkClick }) => {
 
       <nav className="c-sidebar__nav" role="navigation">
         <div className="c-sidebar__section">
-          <span className="c-sidebar__section-title">Menu</span>
+          <span className="c-sidebar__section-title">Páginas</span>
+          <NavLink
+            to="../encontrar-gc"
+            className="c-sidebar__link"
+            end
+            onClick={handleClick}
+          >
+            <RiExternalLinkFill aria-hidden="true" />
+            <span>Encontrar GC</span>
+          </NavLink>
+
+          <NavLink
+            to="../"
+            className="c-sidebar__link"
+            end
+            onClick={handleClick}
+          >
+            <RiExternalLinkFill aria-hidden="true" />
+            <span>Ficha de Membros</span>
+          </NavLink>
+        </div>
+
+        <div className="c-sidebar__section">
+          <span className="c-sidebar__section-title">Gerenciar</span>
           <NavLink
             to="/dashboard"
             className="c-sidebar__link"
@@ -47,10 +71,7 @@ export const Sidebar = ({ isMobile, onLinkClick }) => {
             <RiGroupLine aria-hidden="true" />
             <span>GCs</span>
           </NavLink>
-        </div>
 
-        <div className="c-sidebar__section">
-          <span className="c-sidebar__section-title">Gerenciar</span>
           <NavLink
             to="/dashboard/membros"
             className="c-sidebar__link"
