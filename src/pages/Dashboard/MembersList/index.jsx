@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { RiMailCheckFill } from "react-icons/ri";
 import {
   Search,
   ChevronLeft,
   ChevronRight,
+  Mail,
   Eye,
   Users,
   UserPlus,
@@ -15,6 +17,7 @@ import * as S from "../styles";
 import "./styles.scss";
 import { MemberDetailsModal } from "../../../components/MemberDetailsModal";
 import { ConfirmationModal } from "../../../components/ConfirmationModal";
+import { MessageModal } from "../../../components/MessageModal";
 
 export const MembersList = () => {
   const [loading, setLoading] = useState(true);
@@ -24,6 +27,8 @@ export const MembersList = () => {
   const [selectedMember, setSelectedMember] = useState(null);
   const [memberToDelete, setMemberToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
+  const [memberToMessage, setMemberToMessage] = useState(null);
   const itemsPerPage = 10;
 
   useEffect(() => {
@@ -170,6 +175,21 @@ export const MembersList = () => {
                     <td>
                       <S.ActionButtons>
                         <S.ActionButton
+                          onClick={() => setMemberToMessage(member)}
+                          title={
+                            member.belongs_to_gc
+                              ? "Membro Ativo no GC"
+                              : "Enviar mensagem"
+                          }
+                        >
+                          {member.belongs_to_gc ? (
+                            <RiMailCheckFill size={18} />
+                          ) : (
+                            <Mail size={18} />
+                          )}
+                          {/* <Mail size={18} /> */}
+                        </S.ActionButton>
+                        <S.ActionButton
                           onClick={() => setSelectedMember(member)}
                           title="Ver detalhes"
                         >
@@ -228,6 +248,12 @@ export const MembersList = () => {
         onConfirm={handleDeleteMember}
         onCancel={() => setMemberToDelete(null)}
         isLoading={isDeleting}
+      />
+
+      <MessageModal
+        isOpen={!!memberToMessage}
+        member={memberToMessage}
+        onClose={() => setMemberToMessage(null)}
       />
     </section>
   );
