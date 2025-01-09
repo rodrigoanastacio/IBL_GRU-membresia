@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "../../components/Header";
 import { CepSearch } from "../../components/CepSearch";
 import { GCMap } from "../../components/GCMap";
@@ -11,6 +11,10 @@ export const NearestGC = () => {
   const [nearestGCs, setNearestGCs] = useState([]);
   const [onlineGCs, setOnlineGCs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    document.title = "Encontre um GC | IBL-GRU";
+  }, []);
 
   const handleLocationFound = (location) => {
     setUserLocation(location);
