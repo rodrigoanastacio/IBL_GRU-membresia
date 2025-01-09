@@ -82,9 +82,35 @@ async function removeFileFromStorage(url: string | null) {
   }
 }
 
+export async function checkEmailExists(email: string): Promise<boolean> {
+  try {
+    const { data, error } = await supabase
+      .from("members")
+      .select("id")
+      .eq("email", email)
+      .single();
+
+    if (error && error.code !== "PGRST116") {
+      console.error("Erro ao verificar email:", error);
+      throw error;
+    }
+
+    return !!data;
+  } catch (error) {
+    console.error("Erro ao verificar email:", error);
+    throw error;
+  }
+}
+
 export async function createMember(data: MembershipFormData) {
   try {
     console.log("Iniciando processo de criação do membro");
+
+    // Verificar se o email já existe
+    const emailExists = await checkEmailExists(data.email);
+    if (emailExists) {
+      throw new Error("Este email já está cadastrado no sistema");
+    }
 
     const marriageCertificateFile =
       data.marriageCertificate instanceof FileList

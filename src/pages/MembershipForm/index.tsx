@@ -10,7 +10,7 @@ import { DatePicker } from "../../components/DatePicker";
 import { MaskedInput } from "../../components/MaskedInput";
 import { AddressForm } from "../../components/AddressForm";
 import { membershipFormSchema, type MembershipFormData } from "./validation";
-import { createMember } from "../../services/member";
+import { checkEmailExists, createMember } from "../../services/member";
 import * as S from "./styles";
 
 const maritalStatusOptions = [
@@ -63,6 +63,7 @@ const registeredGCs = [
 export function MembershipForm() {
   const methods = useForm<MembershipFormData>({
     resolver: zodResolver(membershipFormSchema),
+    mode: "onBlur", // Validação ocorre ao perder o foco
   });
 
   const {
@@ -70,6 +71,8 @@ export function MembershipForm() {
     register,
     watch,
     setValue,
+    setError,
+    clearErrors,
     formState: { errors, isSubmitting },
   } = methods;
 
@@ -79,10 +82,36 @@ export function MembershipForm() {
     try {
       await createMember(data);
       toast.success("Ficha de membro cadastrada com sucesso!");
-      methods.reset(); // Limpa o formulário após o sucesso
+      methods.reset();
     } catch (error) {
       console.error(error);
-      toast.error("Erro ao cadastrar ficha de membro. Tente novamente.");
+      if (
+        error instanceof Error &&
+        error.message === "Este email já está cadastrado no sistema"
+      ) {
+        toast.error(error.message);
+      } else {
+        toast.error("Erro ao cadastrar ficha de membro. Tente novamente.");
+      }
+    }
+  };
+
+  const validateEmail = async (email: string) => {
+    try {
+      const exists = await checkEmailExists(email);
+      if (exists) {
+        setError("email", {
+          type: "manual",
+          message: "Este email já está cadastrado no sistema",
+        });
+        return false; // Retorna false para indicar que a validação falhou
+      } else {
+        clearErrors("email"); // Limpa o erro se o e-mail for válido
+        return true; // Retorna true para indicar que a validação foi bem-sucedida
+      }
+    } catch (error) {
+      console.error("Erro ao validar email:", error);
+      return true; // Permite continuar em caso de erro na validação
     }
   };
 
@@ -94,6 +123,7 @@ export function MembershipForm() {
           <S.Form onSubmit={handleSubmit(onSubmit)}>
             <Input
               label="Nome Completo"
+              autoFocus
               {...register("fullName")}
               error={errors.fullName?.message}
             />
@@ -141,7 +171,14 @@ export function MembershipForm() {
               <Input
                 label="E-mail"
                 type="email"
-                {...register("email")}
+                {...register("email", {
+                  validate: validateEmail, // Validação personalizada
+                  onBlur: async (e) => {
+                    if (e.target.value) {
+                      await validateEmail(e.target.value); // Chama a validação ao perder o foco
+                    }
+                  },
+                })}
                 error={errors.email?.message}
               />
             </S.Row>
