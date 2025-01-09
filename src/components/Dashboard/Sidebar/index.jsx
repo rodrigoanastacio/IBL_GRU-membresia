@@ -39,14 +39,14 @@ export const Sidebar = ({ isMobile, onLinkClick }) => {
             <span>Dashboard</span>
           </NavLink>
 
-          <NavLink
+          {/* <NavLink
             to="/dashboard/gcs"
             className="c-sidebar__link"
             onClick={handleClick}
           >
             <RiGroupLine aria-hidden="true" />
             <span>GCs</span>
-          </NavLink>
+          </NavLink> */}
         </div>
 
         <div className="c-sidebar__section">
@@ -62,7 +62,7 @@ export const Sidebar = ({ isMobile, onLinkClick }) => {
           </NavLink>
         </div>
 
-        <div className="c-sidebar__section">
+        {/* <div className="c-sidebar__section">
           <span className="c-sidebar__section-title">Sistema</span>
           <NavLink
             to="/dashboard/settings"
@@ -72,7 +72,7 @@ export const Sidebar = ({ isMobile, onLinkClick }) => {
             <RiSettings4Line aria-hidden="true" />
             <span>Configurações</span>
           </NavLink>
-        </div>
+        </div> */}
       </nav>
 
       <button className="c-sidebar__logout" onClick={handleLogout}>
