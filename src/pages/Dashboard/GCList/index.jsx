@@ -1,13 +1,21 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { RiAddLine } from "react-icons/ri";
-import "./styles.scss";
-import { Modal } from "../../../components/DocumentPreview/styles";
-import { NewGC } from "../NewGC";
+import { items } from "../../../data/items";
+import { SearchFilter } from "../../../components/SearchFilter";
+import { Modal } from "../../../components/Modal";
 import { EditGC } from "../EditGC";
+import { NewGC } from "../NewGC";
+import "./styles.scss";
 
 export const GCList = () => {
+  const [searchTerm, setSearchTerm] = useState("");
   const [selectedGC, setSelectedGC] = useState(null);
   const [isNewGCModalOpen, setIsNewGCModalOpen] = useState(false);
+
+  const filteredItems = items.filter((item) =>
+    item.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleEdit = (id) => {
     setSelectedGC(id);
@@ -35,7 +43,7 @@ export const GCList = () => {
       </div>
 
       <div className="p-gc-list__filters">
-        {/* <SearchFilter onFilterChange={setSearchTerm} /> */}
+        <SearchFilter onFilterChange={setSearchTerm} />
       </div>
 
       <div className="p-gc-list__table">
@@ -50,17 +58,28 @@ export const GCList = () => {
             </tr>
           </thead>
           <tbody>
-            {/* {filteredItems.map((item) => ( */}
-            <tr>
-              <td>Title</td>
-              <td>leaders</td>
-              <td>{/* {item.data} às {item.time} */}</td>
-              <td></td>
-              <td>
-                <button className="p-gc-list__button">Editar</button>
-              </td>
-            </tr>
-            {/* ))} */}
+            {filteredItems.map((item) => (
+              <motion.tr
+                key={item.id}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                <td>{item.title}</td>
+                <td>{item.leaders}</td>
+                <td>
+                  {item.data} às {item.time}
+                </td>
+                <td>{item.isOnline ? "Online" : "Presencial"}</td>
+                <td>
+                  <button
+                    className="p-gc-list__button"
+                    onClick={() => handleEdit(item.id)}
+                  >
+                    Editar
+                  </button>
+                </td>
+              </motion.tr>
+            ))}
           </tbody>
         </table>
       </div>

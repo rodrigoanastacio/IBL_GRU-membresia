@@ -1,0 +1,23 @@
+.c-search {
+  width: 100%;
+  margin-bottom: 2rem;
+
+  &__input {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #e3e9f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: "Montserrat", sans-serif;
+
+    &:focus {
+      outline: none;
+      border-color: #fece00;
+      box-shadow: 0 0 0 2px rgba(254, 206, 0, 0.1);
+    }
+
+    &::placeholder {
+      color: #8898aa;
+    }
+  }
+}

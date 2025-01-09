@@ -39,14 +39,14 @@ export const Sidebar = ({ isMobile, onLinkClick }) => {
             <span>Dashboard</span>
           </NavLink>
 
-          {/* <NavLink
+          <NavLink
             to="/dashboard/gcs"
             className="c-sidebar__link"
             onClick={handleClick}
           >
             <RiGroupLine aria-hidden="true" />
             <span>GCs</span>
-          </NavLink> */}
+          </NavLink>
         </div>
 
         <div className="c-sidebar__section">

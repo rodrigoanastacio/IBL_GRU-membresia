@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
-// import { items } from "../../../data/items";
-// import { PhoneInput } from "../../../components/PhoneInput";
+import { items } from "../../../data/items";
+import { PhoneInput } from "../../../components/PhoneInput";
 import "./styles.scss";
 
 export const EditGC = ({ id, onClose }) => {
   const [formData, setFormData] = useState(null);
 
-  // useEffect(() => {
-  //   const gc = items.find((item) => item.id === id);
-  //   if (gc) {
-  //     setFormData(gc);
-  //   }
-  // }, [id]);
+  useEffect(() => {
+    const gc = items.find((item) => item.id === id);
+    if (gc) {
+      setFormData(gc);
+    }
+  }, [id]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,24 +19,24 @@ export const EditGC = ({ id, onClose }) => {
     onClose();
   };
 
-  // const handleChange = (e) => {
-  //   const { name, value, type, checked } = e.target;
-  //   if (name.startsWith("address.")) {
-  //     const addressField = name.split(".")[1];
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       addressDetails: {
-  //         ...prev.addressDetails,
-  //         [addressField]: value,
-  //       },
-  //     }));
-  //   } else {
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       [name]: type === "checkbox" ? checked : value,
-  //     }));
-  //   }
-  // };
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    if (name.startsWith("address.")) {
+      const addressField = name.split(".")[1];
+      setFormData((prev) => ({
+        ...prev,
+        addressDetails: {
+          ...prev.addressDetails,
+          [addressField]: value,
+        },
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      }));
+    }
+  };
 
   if (!formData) return null;
 
@@ -44,18 +44,32 @@ export const EditGC = ({ id, onClose }) => {
     <div className="p-edit-gc">
       <h1 className="p-edit-gc__title">Editar GC</h1>
 
-      <form className="p-edit-gc__form">
+      <form onSubmit={handleSubmit} className="p-edit-gc__form">
         <div className="p-edit-gc__field">
           <label htmlFor="title">Nome do GC</label>
-          <input type="text" id="title" name="title" required />
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            required
+          />
         </div>
 
         <div className="p-edit-gc__field">
           <label htmlFor="leaders">Líderes</label>
-          <input type="text" id="leaders" name="leaders" required />
+          <input
+            type="text"
+            id="leaders"
+            name="leaders"
+            value={formData.leaders}
+            onChange={handleChange}
+            required
+          />
         </div>
 
-        {/* <div className="p-edit-gc__field">
+        <div className="p-edit-gc__field">
           <label htmlFor="contact">Contato</label>
           <PhoneInput
             value={formData.contact}
@@ -162,7 +176,7 @@ export const EditGC = ({ id, onClose }) => {
               </div>
             </div>
           </fieldset>
-        )} */}
+        )}
 
         <div className="p-edit-gc__buttons">
           <button
