@@ -1,9 +1,9 @@
-import { useRef } from 'react';
-import { X, Download } from 'lucide-react';
-import * as S from './styles';
-import { formatDate } from '../../utils/date';
-import { generatePDF } from '../../services/pdf';
-import { DocumentPreview } from '../DocumentPreview';
+import { useRef } from "react";
+import { X, Download } from "lucide-react";
+import * as S from "./styles";
+import { formatDate } from "../../utils/date";
+import { generatePDF } from "../../services/pdf";
+import { DocumentPreview } from "../DocumentPreview";
 
 interface Member {
   id: string;
@@ -26,6 +26,7 @@ interface Member {
   identification_url?: string;
   pastoral_interviewer: string;
   belongs_to_gc: boolean;
+  gc_name?: string;
   wants_to_volunteer: boolean;
   created_at: string;
 }
@@ -35,17 +36,22 @@ interface MemberDetailsModalProps {
   onClose: () => void;
 }
 
-export function MemberDetailsModal({ member, onClose }: MemberDetailsModalProps) {
+export function MemberDetailsModal({
+  member,
+  onClose,
+}: MemberDetailsModalProps) {
   const contentRef = useRef<HTMLDivElement>(null);
 
   const handleDownloadPDF = async () => {
     if (!contentRef.current) return;
 
     try {
-      const filename = `membro-${member.full_name.toLowerCase().replace(/\s+/g, '-')}.pdf`;
+      const filename = `membro-${member.full_name
+        .toLowerCase()
+        .replace(/\s+/g, "-")}.pdf`;
       await generatePDF(contentRef.current, filename);
     } catch (error) {
-      console.error('Error downloading PDF:', error);
+      console.error("Error downloading PDF:", error);
       // Aqui você pode adicionar uma notificação de erro para o usuário
     }
   };
@@ -54,7 +60,9 @@ export function MemberDetailsModal({ member, onClose }: MemberDetailsModalProps)
     <S.Overlay>
       <S.Container>
         <S.Header>
-          <S.Title>Detalhes da submissão ({formatDate(member.created_at)})</S.Title>
+          <S.Title>
+            Detalhes da submissão ({formatDate(member.created_at)})
+          </S.Title>
           <S.HeaderActions>
             <S.ActionButton onClick={handleDownloadPDF} title="Baixar PDF">
               <Download size={20} />
@@ -66,7 +74,9 @@ export function MemberDetailsModal({ member, onClose }: MemberDetailsModalProps)
         </S.Header>
 
         <S.Content ref={contentRef}>
-          <S.Subtitle>Respondente (Hóspede) - ID de Envio ({member.id})</S.Subtitle>
+          <S.Subtitle>
+            Respondente (Hóspede) - ID de Envio ({member.id})
+          </S.Subtitle>
 
           <S.DetailsGrid>
             <S.DetailItem>
@@ -156,20 +166,30 @@ export function MemberDetailsModal({ member, onClose }: MemberDetailsModalProps)
 
             <S.DetailItem>
               <S.DetailNumber>12.</S.DetailNumber>
-              <S.DetailLabel>Quem realizou a sua entrevista pastoral?</S.DetailLabel>
+              <S.DetailLabel>
+                Quem realizou a sua entrevista pastoral?
+              </S.DetailLabel>
               <S.DetailValue>{member.pastoral_interviewer}</S.DetailValue>
             </S.DetailItem>
 
             <S.DetailItem>
               <S.DetailNumber>13.</S.DetailNumber>
               <S.DetailLabel>Pertence ao GC:</S.DetailLabel>
-              <S.DetailValue>{member.belongs_to_gc ? 'Sim' : 'Não'}</S.DetailValue>
+              <S.DetailValue>
+                {member.belongs_to_gc
+                  ? `Sim${member.gc_name ? `, ${member.gc_name}` : ""}`
+                  : "Não"}
+              </S.DetailValue>
             </S.DetailItem>
 
             <S.DetailItem>
               <S.DetailNumber>14.</S.DetailNumber>
-              <S.DetailLabel>Deseja participar do Giro de Voluntários?</S.DetailLabel>
-              <S.DetailValue>{member.wants_to_volunteer ? 'Sim' : 'Não'}</S.DetailValue>
+              <S.DetailLabel>
+                Deseja participar do Giro de Voluntários?
+              </S.DetailLabel>
+              <S.DetailValue>
+                {member.wants_to_volunteer ? "Sim" : "Não"}
+              </S.DetailValue>
             </S.DetailItem>
           </S.DetailsGrid>
         </S.Content>
