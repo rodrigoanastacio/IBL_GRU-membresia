@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from "styled-components";
 
 const spin = keyframes`
   to { transform: rotate(360deg); }
@@ -153,5 +153,12 @@ export const FullImage = styled.img`
   max-width: 100%;
   max-height: calc(90vh - 120px);
   object-fit: contain;
+  border-radius: 0.375rem;
+`;
+
+export const PDFViewer = styled.iframe`
+  width: 100%;
+  height: calc(90vh - 120px);
+  border: none;
   border-radius: 0.375rem;
 `;
