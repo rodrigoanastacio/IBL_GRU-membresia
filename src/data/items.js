@@ -545,8 +545,8 @@ export const items = [
       country: "Brasil",
     },
     coordinates: {
-      lat: -23.4719737,
-      lng: -46.52036445,
+      lat: -23.455049360753573,
+      lng: -46.515787679323005,
     },
     isOnline: false,
     isCouple: false,
