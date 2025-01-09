@@ -16,11 +16,11 @@ export function MessageModal({ isOpen, member, onClose }: MessageModalProps) {
     return phoneNumber.replace(/\D/g, "");
   };
 
-  const whatsappMessage = `Olá, ${member.full_name}  tudo bem?%0A%0AVocê foi cadastrado em nossa lista de membros da igreja e gostaríamos de te convidar a participar de um GC mais próximo de sua residência.%0A%0AAcesse o link https://ibl-gru-membresia.vercel.app/encontrar-gc para encontrar o GC ideal para você.%0A%0AAguardamos você!`;
+  const whatsappMessage = `Olá, ${member.full_name} a paz! Tudo bem?\n\nEsperamos que esteja tudo ótimo por aí! Você preencheu recentemente nossa ficha de membros e informou que não participa de nenhum GC, adoraríamos te convidar a participar de um *Grupo de Comunhão (GC)* mais próximo da sua residência.\n\nÉ uma ótima oportunidade para se conectar com outras pessoas, fortalecer sua fé e viver momentos em comunhão com demais irmãos da Igreja!\n\nPara encontrar o GC ideal para você, é só acessar o link abaixo:\nhttps://ibl-gru-membresia.vercel.app/encontrar-gc\n\nFicaremos muito felizes em te receber! Se tiver qualquer dúvida ou precisar de ajuda, é só nos avisar. Estamos aqui para ajudar!\n\n*Um abraço e até breve!*\nIgreja Batista da Lagoinha Guarulhos`;
 
   const whatsappLink = `https://wa.me/55${formatPhoneNumber(
     member.phone
-  )}?text=${whatsappMessage}`;
+  )}?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
     <S.Overlay onClick={onClose}>
