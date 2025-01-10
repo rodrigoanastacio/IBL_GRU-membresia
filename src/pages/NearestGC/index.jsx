@@ -1,9 +1,12 @@
+import MetaTags from "react-meta-tags";
+
 import { useState, useEffect } from "react";
 import { Header } from "../../components/Header";
 import { CepSearch } from "../../components/CepSearch";
 import { GCMap } from "../../components/GCMap";
 import { items } from "../../data/items";
 import { findNearestGCs } from "../../utils/distance";
+
 import "./styles.scss";
 
 export const NearestGC = () => {
@@ -12,9 +15,9 @@ export const NearestGC = () => {
   const [onlineGCs, setOnlineGCs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    document.title = "Encontre um GC | IBL-GRU";
-  }, []);
+  // useEffect(() => {
+  //   document.title = "Encontre um GC | IBL-GRU";
+  // }, []);
 
   const handleLocationFound = (location) => {
     setUserLocation(location);
@@ -32,11 +35,32 @@ export const NearestGC = () => {
 
   return (
     <>
+      <MetaTags>
+        <title>Encontre um GC | Igreja Batista da Lagoinha - Guarulhos</title>
+
+        {/* OpenGraph Meta Tags */}
+        <meta
+          property="og:title"
+          content="Encontre um GC | Igreja Batista da Lagoinha - Guarulhos"
+        />
+        <meta
+          property="og:description"
+          content="Descubra o GC mais próximo da sua casa e permita-se ser cuidado!"
+        />
+
+        <meta property="og:url" content="https://seusite.com/nearest-gc" />
+
+        <meta
+          property="og:image"
+          content="https://ibl-gru-membresia.vercel.app/share-og.png"
+        />
+      </MetaTags>
+
       <Header />
       <div className="p-nearest-gc">
         <div className="p-nearest-gc__container">
           <h2 className="p-nearest-gc__title">
-            Encontre os GCs mais próximos de você
+            Encontre o GC mais próximos de você
           </h2>
 
           <CepSearch

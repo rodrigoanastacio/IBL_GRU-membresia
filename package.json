@@ -31,6 +31,7 @@
     "react-imask": "^7.6.1",
     "react-input-mask": "^2.0.4",
     "react-leaflet": "^4.2.1",
+    "react-meta-tags": "^1.0.1",
     "react-router-dom": "^6.22.3",
     "react-toastify": "^11.0.2",
     "sass": "^1.83.0",
