@@ -7,6 +7,8 @@ import { GCMap } from "../../components/GCMap";
 import { items } from "../../data/items";
 import { findNearestGCs } from "../../utils/distance";
 
+import { formatPhoneNumber } from "../../utils/formatPhoneNumber";
+
 import "./styles.scss";
 
 export const NearestGC = () => {
@@ -83,6 +85,7 @@ export const NearestGC = () => {
                     <div key={gc.id} className="p-nearest-gc__item">
                       <h4>{gc.title}</h4>
                       <p>Líderes: {gc.leaders}</p>
+                      <p>Contato: {formatPhoneNumber(gc.contact)}</p>
                       <p>Distância: {gc.distance.toFixed(1)}km</p>
                       <p>
                         {gc.addressDetails.street}, {gc.addressDetails.number}
