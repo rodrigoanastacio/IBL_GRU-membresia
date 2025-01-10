@@ -13,7 +13,14 @@ export function Dashboard() {
   const { signOut } = useClerk();
 
   console.log("User:::: ", user);
-  console.log("User:::: ", user.imageUrl);
+  // console.log("User:::: ", user.organizationMemberships);
+  // console.log(
+  //   "User:::: ",
+  //   user.organizationMemberships.forEach((u) => {
+  //     console.log("User Role: ", u.organization.name);
+  //     // organization
+  //   })
+  // );
 
   const handleCleanupStorage = async () => {
     try {
