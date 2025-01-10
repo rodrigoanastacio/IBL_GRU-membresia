@@ -18,10 +18,14 @@ export const Container = styled.div`
   border-radius: 0.5rem;
   width: 100%;
   max-width: 800px;
-  min-height: 90vh;
+  min-height: 100vh;
   overflow-y: auto;
   position: relative;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+
+  @media (min-width: 768px) {
+    min-height: 90vh;
+  }
 `;
 
 export const Header = styled.div`
@@ -70,11 +74,15 @@ export const Body = styled.div`
 `;
 
 export const BoxMessage = styled.div`
+  /* padding: 0 2rem; */
+  width: 60%;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   > p {
+    color: #6b7280;
   }
 `;
 
