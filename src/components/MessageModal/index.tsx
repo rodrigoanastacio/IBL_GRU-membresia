@@ -1,4 +1,5 @@
 import { X } from "lucide-react";
+import { RiWhatsappLine } from "react-icons/ri";
 import * as S from "./styles";
 
 interface MessageModalProps {
@@ -32,17 +33,22 @@ export function MessageModal({ isOpen, member, onClose }: MessageModalProps) {
           </S.CloseButton>
         </S.Header>
         <S.Body>
-          {!member.belongs_to_gc ? (
-            <S.WhatsAppLink
-              href={whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Enviar mensagem por WhatsApp
-            </S.WhatsAppLink>
-          ) : (
-            <p>Este membro já está ativo em um GC.</p>
-          )}
+          <S.BoxMessage>
+            {!member.belongs_to_gc ? (
+              <>
+                <p>Enviar convite</p>
+                <S.WhatsAppLink
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <RiWhatsappLine size={24} />
+                </S.WhatsAppLink>
+              </>
+            ) : (
+              <p>Este membro já está ativo em um GC.</p>
+            )}
+          </S.BoxMessage>
         </S.Body>
       </S.Container>
     </S.Overlay>
