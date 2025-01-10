@@ -15,10 +15,6 @@ export const NearestGC = () => {
   const [onlineGCs, setOnlineGCs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // useEffect(() => {
-  //   document.title = "Encontre um GC | IBL-GRU";
-  // }, []);
-
   const handleLocationFound = (location) => {
     setUserLocation(location);
     const nearest = findNearestGCs(items, location);
@@ -38,7 +34,6 @@ export const NearestGC = () => {
       <MetaTags>
         <title>Encontre um GC | Igreja Batista da Lagoinha - Guarulhos</title>
 
-        {/* OpenGraph Meta Tags */}
         <meta
           property="og:title"
           content="Encontre um GC | Igreja Batista da Lagoinha - Guarulhos"
@@ -48,7 +43,10 @@ export const NearestGC = () => {
           content="Descubra o GC mais próximo da sua casa e permita-se ser cuidado!"
         />
 
-        <meta property="og:url" content="https://seusite.com/nearest-gc" />
+        <meta
+          property="og:url"
+          content="https://ibl-gru-membresia.vercel.app/encontrar-gc"
+        />
 
         <meta
           property="og:image"
