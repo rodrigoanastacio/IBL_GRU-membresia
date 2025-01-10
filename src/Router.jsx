@@ -7,6 +7,7 @@ import { GCList } from "./pages/Dashboard/GCList";
 import { MembersList } from "./pages/Dashboard/MembersList";
 import { Dashboard } from "./pages/Dashboard";
 import { NearestGC } from "./pages/NearestGC";
+import { Settings } from "./pages/Dashboard/Settings";
 
 export function Router() {
   return (
@@ -18,6 +19,7 @@ export function Router() {
         <Route index element={<Dashboard />} />
         <Route path="gcs" element={<GCList />} />
         <Route path="membros" element={<MembersList />} />
+        <Route path="settings" element={<Settings />} />
       </Route>
     </Routes>
   );
