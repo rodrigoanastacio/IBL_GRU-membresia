@@ -43,51 +43,50 @@ export const Sidebar = ({ isMobile, onLinkClick }) => {
       </div>
 
       <nav className="c-sidebar__nav" role="navigation">
-        <div className="c-sidebar__section">
-          <span className="c-sidebar__section-title">Páginas</span>
-          <NavLink
-            to="../encontrar-gc"
-            className="c-sidebar__link"
-            end
-            onClick={handleClick}
-          >
-            <RiExternalLinkFill aria-hidden="true" />
-            <span>Encontrar GC</span>
-          </NavLink>
+        {isAdmin && (
+          <>
+            <div className="c-sidebar__section">
+              <span className="c-sidebar__section-title">Páginas</span>
+              <NavLink
+                to="../encontrar-gc"
+                className="c-sidebar__link"
+                end
+                onClick={handleClick}
+              >
+                <RiExternalLinkFill aria-hidden="true" />
+                <span>Encontrar GC</span>
+              </NavLink>
 
-          <NavLink
-            to="../"
-            className="c-sidebar__link"
-            end
-            onClick={handleClick}
-          >
-            <RiExternalLinkFill aria-hidden="true" />
-            <span>Ficha de Membros</span>
-          </NavLink>
-        </div>
+              <NavLink
+                to="../"
+                className="c-sidebar__link"
+                end
+                onClick={handleClick}
+              >
+                <RiExternalLinkFill aria-hidden="true" />
+                <span>Ficha de Membros</span>
+              </NavLink>
+            </div>
+            <div className="c-sidebar__section">
+              <span className="c-sidebar__section-title">Gerenciar</span>
+              <Submenu title="Dashboard" icon={<RiDashboardLine />}>
+                <NavLink
+                  to="/dashboard"
+                  className="c-sidebar__link"
+                  end
+                  onClick={handleClick}
+                >
+                  <span>Visão Geral</span>
+                </NavLink>
+                <NavLink
+                  to="/dashboard/metrics"
+                  className="c-sidebar__link"
+                  onClick={handleClick}
+                >
+                  <span>Métricas</span>
+                </NavLink>
+              </Submenu>
 
-        <div className="c-sidebar__section">
-          <span className="c-sidebar__section-title">Gerenciar</span>
-          <Submenu title="Dashboard" icon={<RiDashboardLine />}>
-            <NavLink
-              to="/dashboard"
-              className="c-sidebar__link"
-              end
-              onClick={handleClick}
-            >
-              <span>Visão Geral</span>
-            </NavLink>
-            <NavLink
-              to="/dashboard/metrics"
-              className="c-sidebar__link"
-              onClick={handleClick}
-            >
-              <span>Métricas</span>
-            </NavLink>
-          </Submenu>
-
-          {isAdmin && (
-            <>
               <NavLink
                 to="/dashboard/gcs"
                 className="c-sidebar__link"
@@ -106,9 +105,9 @@ export const Sidebar = ({ isMobile, onLinkClick }) => {
                 <RiDashboardLine aria-hidden="true" />
                 <span>Membresia</span>
               </NavLink>
-            </>
-          )}
-        </div>
+            </div>
+          </>
+        )}
 
         <div className="c-sidebar__section">
           <span className="c-sidebar__section-title">Ministérios</span>
