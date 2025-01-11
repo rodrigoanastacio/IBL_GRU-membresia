@@ -1,12 +1,15 @@
 import { NavLink } from "react-router-dom";
+import { useClerk, useUser } from "@clerk/clerk-react";
+import { PiUsersThreeLight, PiUsersLight } from "react-icons/pi";
+import { MdMapsHomeWork } from "react-icons/md";
+
 import {
   RiExternalLinkFill,
   RiDashboardLine,
-  RiGroupLine,
+  RiDashboard3Fill,
   RiLogoutBoxLine,
   RiSettings4Line,
 } from "react-icons/ri";
-import { useClerk, useUser } from "@clerk/clerk-react";
 
 import { Submenu } from "../../Submenu";
 
@@ -69,7 +72,7 @@ export const Sidebar = ({ isMobile, onLinkClick }) => {
             </div>
             <div className="c-sidebar__section">
               <span className="c-sidebar__section-title">Gerenciar</span>
-              <Submenu title="Dashboard" icon={<RiDashboardLine />}>
+              <Submenu title="Dashboard" icon={<RiDashboard3Fill />}>
                 <NavLink
                   to="/dashboard"
                   className="c-sidebar__link"
@@ -92,7 +95,7 @@ export const Sidebar = ({ isMobile, onLinkClick }) => {
                 className="c-sidebar__link"
                 onClick={handleClick}
               >
-                <RiGroupLine aria-hidden="true" />
+                <MdMapsHomeWork aria-hidden="true" />
                 <span>GCs</span>
               </NavLink>
 
@@ -102,7 +105,7 @@ export const Sidebar = ({ isMobile, onLinkClick }) => {
                 end
                 onClick={handleClick}
               >
-                <RiDashboardLine aria-hidden="true" />
+                <PiUsersThreeLight aria-hidden="true" />
                 <span>Membresia</span>
               </NavLink>
             </div>
