@@ -5,10 +5,8 @@ const spin = keyframes`
 `;
 
 export const Container = styled.div`
-  padding: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
   max-width: 1600px;
   margin: 0 auto;
   width: 100%;

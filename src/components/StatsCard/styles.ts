@@ -1,22 +1,22 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const colors = {
   blue: {
-    bg: '#e0f2fe',
-    text: '#0284c7'
+    bg: "#e0f2fe",
+    text: "#0284c7",
   },
   green: {
-    bg: '#dcfce7',
-    text: '#16a34a'
+    bg: "#dcfce7",
+    text: "#16a34a",
   },
   yellow: {
-    bg: '#fef3c7',
-    text: '#d97706'
+    bg: "#fef3c7",
+    text: "#d97706",
   },
   red: {
-    bg: '#fee2e2',
-    text: '#dc2626'
-  }
+    bg: "#fee2e2",
+    text: "#dc2626",
+  },
 };
 
 export const Container = styled.div`
@@ -86,8 +86,8 @@ interface TrendProps {
 export const Trend = styled.span<TrendProps>`
   font-size: 0.875rem;
   font-weight: 500;
-  color: ${({ isPositive }) => (isPositive ? '#16a34a' : '#dc2626')};
+  color: ${({ isPositive }) => (isPositive ? "#16a34a" : "#dc2626")};
   padding: 0.25rem 0.5rem;
-  background-color: ${({ isPositive }) => (isPositive ? '#dcfce7' : '#fee2e2')};
+  background-color: ${({ isPositive }) => (isPositive ? "#dcfce7" : "#fee2e2")};
   border-radius: 9999px;
 `;
