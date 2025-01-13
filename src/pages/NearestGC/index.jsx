@@ -1,4 +1,5 @@
 import MetaTags from "react-meta-tags";
+import { FaWhatsapp } from "react-icons/fa";
 
 import { useState, useEffect } from "react";
 import { Header } from "../../components/Header";
@@ -92,6 +93,14 @@ export const NearestGC = () => {
                         <br />
                         {gc.addressDetails.neighborhood}
                       </p>
+                      <a
+                        href={`https://wa.me/${gc.contact}?text=Olá%20${gc.leaders},%20gostaria%20de%20saber%20sobre%20o%20${gc.title}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FaWhatsapp />
+                        Entrar em contato
+                      </a>
                     </div>
                   ))
                 ) : (
