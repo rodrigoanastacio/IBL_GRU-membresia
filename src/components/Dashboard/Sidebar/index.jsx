@@ -70,6 +70,7 @@ export const Sidebar = ({ isMobile, onLinkClick }) => {
                 <span>Ficha de Membros</span>
               </NavLink>
             </div>
+
             <div className="c-sidebar__section">
               <span className="c-sidebar__section-title">Gerenciar</span>
               <Submenu title="Dashboard" icon={<RiDashboard3Fill />}>
@@ -116,15 +117,16 @@ export const Sidebar = ({ isMobile, onLinkClick }) => {
           <span className="c-sidebar__section-title">Ministérios</span>
 
           {isConsolidacaoMember && (
-            <NavLink
-              to="/dashboard/consolidacao"
-              className="c-sidebar__link"
-              end
-              onClick={handleClick}
-            >
-              <RiDashboardLine aria-hidden="true" />
-              <span>Consolidação</span>
-            </NavLink>
+            <Submenu title="Consolidação" icon={<RiDashboardLine />}>
+              <NavLink
+                to="/dashboard/consolidacao/formulario-sala"
+                className="c-sidebar__link"
+                end
+                onClick={handleClick}
+              >
+                <span>Ficha Sala</span>
+              </NavLink>
+            </Submenu>
           )}
         </div>
 

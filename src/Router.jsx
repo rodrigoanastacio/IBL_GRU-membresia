@@ -8,6 +8,7 @@ import { MembersList } from "./pages/Dashboard/MembersList";
 import { Dashboard } from "./pages/Dashboard";
 import { NearestGC } from "./pages/NearestGC";
 import { Consolidation } from "./pages/Dashboard/Consolidation";
+import { FormConsolidation } from "./pages/Dashboard/Consolidation/FormConsolidation";
 import { Settings } from "./pages/Dashboard/Settings";
 
 export function Router() {
@@ -21,6 +22,10 @@ export function Router() {
         <Route path="gcs" element={<GCList />} />
         <Route path="membros" element={<MembersList />} />
         <Route path="consolidacao" element={<Consolidation />} />
+        <Route
+          path="consolidacao/formulario-sala"
+          element={<FormConsolidation />}
+        />
         <Route path="settings" element={<Settings />} />
       </Route>
     </Routes>
