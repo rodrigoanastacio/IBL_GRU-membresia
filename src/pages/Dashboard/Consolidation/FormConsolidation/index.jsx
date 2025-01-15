@@ -1,6 +1,7 @@
 import { useState } from "react";
 import InputMask from "react-input-mask";
 import { motion, AnimatePresence } from "framer-motion";
+import axios from "axios";
 
 import "./styles.scss";
 
@@ -10,9 +11,13 @@ export const FormConsolidation = () => {
   const TOTAL_STEPS = 2;
 
   const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    address: "",
+    nome: "",
+    telefone: "",
+    bairro: "",
+    cidade: "",
+    estado: "",
+    desejo: "",
+    idade: "",
   });
 
   const handleInputChange = (e) => {
@@ -38,13 +43,24 @@ export const FormConsolidation = () => {
   const isStepValid = () => {
     switch (step) {
       case 1:
-        return formData.name.length >= 3;
+        return formData.nome.length >= 3;
       case 2:
-        return formData.phone.replace(/\D/g, "").length >= 11;
-      case 3:
-        return formData.address.length >= 5;
+        return formData.telefone.replace(/\D/g, "").length >= 11;
       default:
         return false;
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      console.log("Dados do formulário:", formData); // Adicione esta linha
+      const response = await axios.post(
+        "http://localhost:3000/api/registro-decisoes",
+        formData
+      );
+      console.log("Dados enviados com sucesso:", response.data);
+    } catch (error) {
+      console.error("Erro ao enviar os dados:", error);
     }
   };
 
@@ -85,19 +101,19 @@ export const FormConsolidation = () => {
                 <div className="l-consolidation__field">
                   <input
                     type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
+                    id="nome"
+                    name="nome"
+                    value={formData.nome}
                     onChange={handleInputChange}
                     placeholder=" "
                     required
                   />
-                  <label htmlFor="name">Nome completo*</label>
+                  <label htmlFor="nome">Nome completo*</label>
                 </div>
               </fieldset>
 
               <fieldset className="l-consolidation__fieldset">
-                <legend>Endereço</legend>
+                <legend>Bairro</legend>
                 <div className="l-consolidation__row">
                   <div className="l-consolidation__field">
                     <input
@@ -124,6 +140,26 @@ export const FormConsolidation = () => {
                     />
                     <label htmlFor="cidade">Cidade*</label>
                   </div>
+
+                  <div className="l-consolidation__field">
+                    <select
+                      id="estado"
+                      name="estado"
+                      value={formData.estado}
+                      onChange={handleInputChange}
+                      required
+                    >
+                      <option value="" disabled>
+                        Selecione um estado
+                      </option>
+                      <option value="São Paulo">São Paulo</option>
+                      <option value="Minas Gerais">Minas Gerais</option>
+                      <option value="Rio de Janeiro">Rio de Janeiro</option>
+                      <option value="Paraná">Paraná</option>
+                      <option value="Outros">Outros</option>
+                    </select>
+                    <label htmlFor="estado">Estado*</label>
+                  </div>
                 </div>
               </fieldset>
 
@@ -133,70 +169,18 @@ export const FormConsolidation = () => {
                   <InputMask
                     mask="(99) 99999-9999"
                     type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
+                    id="telefone"
+                    name="telefone"
+                    value={formData.telefone}
                     onChange={handleInputChange}
                     placeholder="(00) 00000-0000"
                     required
                   />
-                  <label htmlFor="phone">Celular</label>
+                  <label htmlFor="telefone">Celular</label>
                 </div>
               </fieldset>
             </div>
           )}
-
-          {/* {step === 2 && (
-            <fieldset className="l-consolidation__fieldset">
-              <legend>Endereço</legend>
-              <div className="l-consolidation__row">
-                <div className="l-consolidation__field">
-                  <input
-                    type="text"
-                    id="bairro"
-                    name="bairro"
-                    value={formData.bairro}
-                    onChange={handleInputChange}
-                    placeholder=" "
-                    required
-                  />
-                  <label htmlFor="bairro">Bairro*</label>
-                </div>
-
-                <div className="l-consolidation__field">
-                  <input
-                    type="text"
-                    id="cidade"
-                    name="cidade"
-                    value={formData.cidade}
-                    onChange={handleInputChange}
-                    placeholder=" "
-                    required
-                  />
-                  <label htmlFor="cidade">Cidade*</label>
-                </div>
-              </div>
-            </fieldset>
-          )}
-
-          {step === 3 && (
-            <fieldset className="l-consolidation__fieldset">
-              <legend>Contato</legend>
-              <div className="l-consolidation__field">
-                <InputMask
-                  mask="(99) 99999-9999"
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  placeholder="(00) 00000-0000"
-                  required
-                />
-                <label htmlFor="phone">Celular</label>
-              </div>
-            </fieldset>
-          )} */}
 
           {step === 2 && (
             <div>
@@ -319,7 +303,7 @@ export const FormConsolidation = () => {
       </header>
 
       <div className="l-consolidation__content">
-        <form>{renderStep()}</form>
+        <form onSubmit={(e) => e.preventDefault()}>{renderStep()}</form>
       </div>
 
       <div className="l-consolidation__actions">
@@ -344,9 +328,10 @@ export const FormConsolidation = () => {
         ) : (
           <button
             type="submit"
+            onClick={handleSubmit}
             className="l-consolidation__button l-consolidation__button--success"
           >
-            Criar
+            Enviar
           </button>
         )}
       </div>
