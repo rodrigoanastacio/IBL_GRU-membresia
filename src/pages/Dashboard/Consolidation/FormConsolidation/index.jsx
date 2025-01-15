@@ -2,6 +2,9 @@ import { useState } from "react";
 import InputMask from "react-input-mask";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
+import toast from "react-hot-toast";
+
+import turso from "../../../../lib/turso";
 
 import "./styles.scss";
 
@@ -52,15 +55,44 @@ export const FormConsolidation = () => {
   };
 
   const handleSubmit = async () => {
+    const { nome, telefone, bairro, cidade, estado, desejo, idade } = formData;
+
     try {
-      console.log("Dados do formulário:", formData); // Adicione esta linha
-      const response = await axios.post(
-        "http://localhost:3000/api/registro-decisoes",
-        formData
-      );
-      console.log("Dados enviados com sucesso:", response.data);
+      const result = await turso.execute({
+        sql: `
+          INSERT INTO RegistroDecisao (nome, telefone, bairro, cidade, estado, desejo, idade)
+          VALUES (?, ?, ?, ?, ?, ?, ?)
+        `,
+        args: [nome, telefone, bairro, cidade, estado, desejo, idade],
+      });
+
+      setFormData({
+        nome: "",
+        telefone: "",
+        bairro: "",
+        cidade: "",
+        estado: "",
+        desejo: "",
+        idade: "",
+      });
+
+      setStep(step - 1);
+
+      setTimeout(() => {
+        document.getElementById("nome").focus();
+      }, 500);
+
+      toast.success("Cadastro realizado com sucesso!", {
+        position: "top-right",
+        duration: 5000,
+      });
     } catch (error) {
       console.error("Erro ao enviar os dados:", error);
+
+      toast.error("Erro ao cadastrar. Tente novamente.", {
+        position: "top-right",
+        duration: 5000,
+      });
     }
   };
 

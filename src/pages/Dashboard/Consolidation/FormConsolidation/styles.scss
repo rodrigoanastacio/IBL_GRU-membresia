@@ -255,3 +255,17 @@
     }
   }
 }
+
+.Toastify__toast {
+  font-family: 'Sua Fonte', sans-serif;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.Toastify__toast--success {
+  background-color: #4caf50;
+}
+
+.Toastify__toast--error {
+  background-color: #f44336;
+}
