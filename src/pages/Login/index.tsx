@@ -1,19 +1,21 @@
-import { SignIn, useAuth } from "@clerk/clerk-react";
+// import { SignIn, useAuth } from "@clerk/clerk-react";
 import { Navigate } from "react-router-dom";
 import logo from "/lagoinha-gru.png";
 import * as S from "./styles";
+import { SignIn } from "../../features/auth/components/SignIn";
 
 export const Login = () => {
-  const { isSignedIn } = useAuth();
+  // const { isSignedIn } = useAuth();
 
-  if (isSignedIn) {
-    return <Navigate to="/dashboard" />;
-  }
+  // if (isSignedIn) {
+  //   return <Navigate to="/dashboard" />;
+  // }
 
   return (
     <S.Container>
       <S.Wrapper>
-        <SignIn
+        <img width={384} src={logo} alt="Logo Lagoinha Guarulhos" />
+        {/* <SignIn
           path="/login"
           routing="path"
           forceRedirectUrl="/dashboard"
@@ -25,10 +27,10 @@ export const Login = () => {
                 "Bem-vindo de volta! Por favor, entre para continuar",
             },
           }}
-        />
+        /> */}
       </S.Wrapper>
       <S.Wrapper>
-        <img src={logo} alt="" />
+        <SignIn />
       </S.Wrapper>
     </S.Container>
   );
