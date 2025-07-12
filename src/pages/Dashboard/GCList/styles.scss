@@ -71,6 +71,23 @@
     }
   }
 
+  &__loading,
+  &__error,
+  &__empty {
+    padding: 2rem;
+    text-align: center;
+    color: #64748b;
+  }
+
+  &__error {
+    color: #ef4444;
+  }
+
+  &__empty {
+    color: #94a3b8;
+    font-style: italic;
+  }
+
   &__button {
     padding: 0.5rem 1rem;
     background: #fece00;

@@ -1,20 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { RiAddLine } from "react-icons/ri";
-import { items } from "../../../data/items";
 import { SearchFilter } from "../../../components/SearchFilter";
 import { Modal } from "../../../components/Modal";
 import { EditGC } from "../EditGC";
 import { NewGC } from "../NewGC";
+import { getGCs } from "../../../services/gc";
 import "./styles.scss";
 
 export const GCList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGC, setSelectedGC] = useState(null);
   const [isNewGCModalOpen, setIsNewGCModalOpen] = useState(false);
+  const [gcList, setGcList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const filteredItems = items.filter((item) =>
-    item.title.toLowerCase().includes(searchTerm.toLowerCase())
+  useEffect(() => {
+    loadGCs();
+  }, []);
+
+  const loadGCs = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getGCs();
+      console.log("GCs carregados:", data);
+      setGcList(data || []);
+    } catch (err) {
+      console.error("Erro ao carregar GCs:", err);
+      setError("Não foi possível carregar os GCs. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredGCs = gcList.filter((gc) =>
+    gc.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleEdit = (id) => {
@@ -27,6 +49,11 @@ export const GCList = () => {
 
   const handleCloseNewModal = () => {
     setIsNewGCModalOpen(false);
+  };
+
+  const handleGCCreated = (newGC) => {
+    // Atualizar a lista com o novo GC
+    setGcList((prev) => [newGC, ...prev]);
   };
 
   return (
@@ -47,41 +74,53 @@ export const GCList = () => {
       </div>
 
       <div className="p-gc-list__table">
-        <table>
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Líderes</th>
-              <th>Horário</th>
-              <th>Tipo</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredItems.map((item) => (
-              <motion.tr
-                key={item.id}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                <td>{item.title}</td>
-                <td>{item.leaders}</td>
-                <td>
-                  {item.data} às {item.time}
-                </td>
-                <td>{item.isOnline ? "Online" : "Presencial"}</td>
-                <td>
-                  <button
-                    className="p-gc-list__button"
-                    onClick={() => handleEdit(item.id)}
-                  >
-                    Editar
-                  </button>
-                </td>
-              </motion.tr>
-            ))}
-          </tbody>
-        </table>
+        {loading ? (
+          <div className="p-gc-list__loading">Carregando GCs...</div>
+        ) : error ? (
+          <div className="p-gc-list__error">{error}</div>
+        ) : filteredGCs.length === 0 ? (
+          <div className="p-gc-list__empty">
+            {searchTerm
+              ? "Nenhum GC encontrado com este termo de busca."
+              : "Nenhum GC cadastrado ainda."}
+          </div>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Líderes</th>
+                <th>Horário</th>
+                <th>Tipo</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredGCs.map((gc) => (
+                <motion.tr
+                  key={gc.id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                >
+                  <td>{gc.title}</td>
+                  <td>{gc.leaders}</td>
+                  <td>
+                    {gc.weekday} às {gc.time}
+                  </td>
+                  <td>{gc.is_online ? "Online" : "Presencial"}</td>
+                  <td>
+                    <button
+                      className="p-gc-list__button"
+                      onClick={() => handleEdit(gc.id)}
+                    >
+                      Editar
+                    </button>
+                  </td>
+                </motion.tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
 
       <Modal
@@ -97,7 +136,7 @@ export const GCList = () => {
         onClose={handleCloseNewModal}
         title="Novo GC"
       >
-        <NewGC onClose={handleCloseNewModal} />
+        <NewGC onClose={handleCloseNewModal} onSuccess={handleGCCreated} />
       </Modal>
     </div>
   );
