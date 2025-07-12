@@ -6,12 +6,12 @@ import { supabase } from "../lib/supabase";
 export interface GC {
   id?: string;
   title: string;
-  leader_name: string; // Campo correto no Supabase
+  leader_name: string;
   leader_contact: string;
-  contact: string; // Campo legado, ainda usado no banco
-  co_leader_name?: string; // Nome do co-líder (com underscore)
-  co_leader_contact?: string; // Contato do co-líder (com underscore)
-  weekday: string; // Era "day"
+  contact: string;
+  co_leader_name?: string;
+  co_leader_contact?: string;
+  weekday: string;
   time: string;
   is_online: boolean;
   is_couple: boolean;
@@ -32,8 +32,6 @@ export interface GC {
  */
 export async function createGC(gcData: Omit<GC, "id" | "created_at">) {
   try {
-    console.log("🏠 Iniciando criação de GC:", gcData.title);
-
     const { data, error } = await supabase
       .from("gcs")
       .insert([gcData])
@@ -44,7 +42,6 @@ export async function createGC(gcData: Omit<GC, "id" | "created_at">) {
       throw error;
     }
 
-    console.log("✅ GC criado com sucesso:", data[0]);
     return data[0];
   } catch (error) {
     console.error("❌ Erro ao processar criação de GC:", error);
@@ -58,8 +55,6 @@ export async function createGC(gcData: Omit<GC, "id" | "created_at">) {
  */
 export async function getGCs() {
   try {
-    console.log("🔍 Buscando todos os GCs");
-
     const { data, error } = await supabase
       .from("gcs")
       .select("*")
@@ -70,7 +65,6 @@ export async function getGCs() {
       throw error;
     }
 
-    console.log("✅ GCs encontrados:", data?.length || 0);
     return data || [];
   } catch (error) {
     console.error("❌ Erro ao processar busca de GCs:", error);
@@ -85,8 +79,6 @@ export async function getGCs() {
  */
 export async function getGCById(id: string) {
   try {
-    console.log("🔍 Buscando GC por ID:", id);
-
     const { data, error } = await supabase
       .from("gcs")
       .select("*")
@@ -98,7 +90,6 @@ export async function getGCById(id: string) {
       throw error;
     }
 
-    console.log("✅ GC encontrado:", data);
     return data;
   } catch (error) {
     console.error("❌ Erro ao processar busca de GC:", error);
@@ -114,8 +105,6 @@ export async function getGCById(id: string) {
  */
 export async function updateGC(id: string, gcData: Partial<GC>) {
   try {
-    console.log("🔄 Atualizando GC:", id);
-
     const { data, error } = await supabase
       .from("gcs")
       .update(gcData)
@@ -127,7 +116,6 @@ export async function updateGC(id: string, gcData: Partial<GC>) {
       throw error;
     }
 
-    console.log("✅ GC atualizado com sucesso:", data[0]);
     return data[0];
   } catch (error) {
     console.error("❌ Erro ao processar atualização de GC:", error);
@@ -142,8 +130,6 @@ export async function updateGC(id: string, gcData: Partial<GC>) {
  */
 export async function deleteGC(id: string) {
   try {
-    console.log("🗑️ Deletando GC:", id);
-
     const { error } = await supabase.from("gcs").delete().eq("id", id);
 
     if (error) {
@@ -151,7 +137,6 @@ export async function deleteGC(id: string) {
       throw error;
     }
 
-    console.log("✅ GC deletado com sucesso");
     return true;
   } catch (error) {
     console.error("❌ Erro ao processar deleção de GC:", error);
