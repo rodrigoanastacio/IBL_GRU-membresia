@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useClerk, useUser } from "@clerk/clerk-react";
+// import { useClerk, useUser } from "@clerk/clerk-react";
 import { cleanupOrphanedFiles } from "../../services/storage";
 import { StorageUsageCard } from "../../components/StorageUsageCard";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
@@ -9,10 +9,9 @@ export function Dashboard() {
   const [isCleaningStorage, setIsCleaningStorage] = useState(false);
   const [showCleanupConfirm, setShowCleanupConfirm] = useState(false);
 
-  const { user } = useUser();
-  const { signOut } = useClerk();
+  // const { user } = useUser();
+  // const { signOut } = useClerk();
 
-  console.log("User:::: ", user);
   // console.log("User:::: ", user.organizationMemberships);
   // console.log(
   //   "User:::: ",
@@ -38,9 +37,9 @@ export function Dashboard() {
     }
   };
 
-  const handleLogout = () => {
-    signOut();
-  };
+  // const handleLogout = () => {
+  //   signOut();
+  // };
 
   return (
     <S.Container>

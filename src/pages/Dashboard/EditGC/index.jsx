@@ -80,11 +80,11 @@ export const EditGC = ({ id, onClose }) => {
 
         <div className="p-edit-gc__row">
           <div className="p-edit-gc__field">
-            <label htmlFor="data">Dia</label>
+            <label htmlFor="weekday">Dia</label>
             <select
-              id="data"
-              name="data"
-              value={formData.data}
+              id="weekday"
+              name="weekday"
+              value={formData.weekday}
               onChange={handleChange}
               required
             >

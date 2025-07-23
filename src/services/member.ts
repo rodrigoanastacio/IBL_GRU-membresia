@@ -177,7 +177,9 @@ export async function getMembers() {
     throw error;
   }
 
-  console.log("Membros encontrados com sucesso");
+  console.log("Membros encontrados:", data); // Adicione este log
+  console.log("Quantidade de membros:", data?.length); // E este também
+
   return data;
 }
 

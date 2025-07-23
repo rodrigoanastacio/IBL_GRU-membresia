@@ -1,9 +1,9 @@
 import { IMaskInput } from "react-imask";
 import "./styles.scss";
 
-export const PhoneInput = ({ value, onChange, required }) => {
+export const PhoneInput = ({ value, onChange, required, name = "contact" }) => {
   const handleAccept = (value) => {
-    onChange({ target: { value, name: "contact" } });
+    onChange({ target: { value, name } });
   };
 
   return (
