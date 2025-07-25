@@ -32,7 +32,8 @@ Sistema completo de gestão de membros e Grupos Conectados (GCs) da Igreja Batis
 - **Browser Image Compression** - Compressão de imagens
 - **React Datepicker** - Seletor de datas
 - **React Input Mask** - Máscaras de entrada
-- **Sonner + React Hot Toast** - Notificações
+- **React Hot Toast** - Notificações
+- **Sonner + React Hot Toast** - Sistema de notificações duplo
 
 ## 🏗️ Arquitetura do Projeto
 
@@ -170,21 +171,47 @@ model RegistroDecisao {
 
 - **Localização**: `/pages/Dashboard/GCList/`, `/pages/Dashboard/NewGC/`, `/pages/Dashboard/EditGC/`
 - **Funcionalidades**:
-  - Listagem com busca e filtros
-  - Criação de novos GCs
-  - Edição de GCs existentes
-  - Suporte a GCs online e presenciais
-  - Gestão de líderes e co-líderes
+  - **Listagem** com busca e filtros em tempo real
+  - **Criação** de novos GCs com validação completa
+  - **Edição** de GCs existentes com pré-carregamento de dados
+  - **Exclusão** com confirmação obrigatória e notificação
+  - **Suporte** a GCs online e presenciais
+  - **Gestão** de líderes e co-líderes
+  - **Validação** de horários e conflitos
+  - **Notificações** toast para feedback do usuário
+
+#### Fluxo de Exclusão de GCs
+
+1. **Clique no botão "Excluir"** na linha do GC
+2. **Modal de confirmação** exibe aviso sobre ação irreversível
+3. **Confirmação obrigatória** com nome do GC na mensagem
+4. **Loading state** durante processamento
+5. **Notificação de sucesso** com toast personalizado
+6. **Atualização automática** da lista
+7. **Fallback** de recarga em caso de erro
 
 ### 3. Dashboard Administrativo
 
 - **Localização**: `/pages/Dashboard/`
 - **Funcionalidades**:
-  - Lista de membros com filtros
-  - Estatísticas e métricas
-  - Gestão de documentos
-  - Exportação de dados
-  - Consolidação de informações
+  - **Lista de membros** com filtros avançados e busca
+  - **Gestão completa de GCs** (CRUD com confirmações)
+  - **Estatísticas e métricas** em tempo real
+  - **Gestão de documentos** com preview e download
+  - **Exportação de dados** em formatos diversos
+  - **Sistema de notificações** integrado
+  - **Confirmações de segurança** para ações críticas
+  - **Interface responsiva** para todos os dispositivos
+  - **Consolidação de informações** de decisões
+
+#### Melhorias de UX Implementadas
+
+- **Confirmação obrigatória** antes de exclusões
+- **Loading states** visuais durante operações
+- **Notificações toast** para feedback imediato
+- **Atualização automática** de listas após mudanças
+- **Tratamento robusto** de erros com fallbacks
+- **Design consistente** em todos os modais
 
 ### 4. Sistema de Mapas
 
@@ -223,15 +250,22 @@ interface GC {
   time: string
   is_online: boolean
   is_couple: boolean
-  // ... campos de endereço
+  // ... campos de endereço (street, number, neighborhood, city, state, country)
 }
 
 // Principais funções
-- createGC(gcData: Omit<GC, 'id' | 'created_at'>)
-- getGCs()
-- getGCById(id: string)
-- updateGC(id: string, gcData: Partial<GC>)
-- deleteGC(id: string)
+- createGC(gcData: Omit<GC, 'id' | 'created_at'>): Promise<GC>
+- getGCs(): Promise<GC[]>
+- getGCById(id: string): Promise<GC | null>
+- updateGC(id: string, gcData: Partial<GC>): Promise<GC>
+- deleteGC(id: string): Promise<boolean>
+
+// Funcionalidades de cada método:
+// - createGC: Validação de dados, criação no Supabase
+// - getGCs: Busca todos os GCs ordenados por data de criação
+// - getGCById: Busca GC específico por ID
+// - updateGC: Atualização parcial de campos
+// - deleteGC: Exclusão permanente com retorno de sucesso/erro
 ```
 
 ### Serviço de Storage (`services/storage.ts`)
@@ -258,6 +292,133 @@ interface GC {
 - **DatePicker** - Seletor de datas
 - **GCMap** - Mapa interativo de GCs
 - **MemberDetailsModal** - Detalhes do membro
+- **ConfirmationModal** - Modal de confirmação reutilizável
+- **SearchFilter** - Componente de busca em tempo real
+- **MessageModal** - Modal para envio de mensagens WhatsApp
+
+#### ConfirmationModal
+
+Componente reutilizável para confirmações críticas:
+
+```typescript
+interface ConfirmationModalProps {
+  isOpen: boolean
+  title: string
+  message: string
+  confirmLabel?: string
+  cancelLabel?: string
+  onConfirm: () => void
+  onCancel: () => void
+  isLoading?: boolean
+}
+
+// Características:
+// - Design consistente com ícone de alerta
+// - Loading state integrado
+// - Acessibilidade (ARIA labels)
+// - Responsivo para mobile
+// - Integração com sistema de toast
+```
+
+## 🔔 Sistema de Notificações e UX
+
+### React Hot Toast
+
+Implementação de notificações elegantes e acessíveis:
+
+```typescript
+import toast from 'react-hot-toast'
+
+// Notificações de sucesso
+toast.success('GC "Nome do GC" foi excluído com sucesso!', {
+  duration: 4000,
+  position: 'top-right'
+})
+
+// Notificações de erro
+toast.error('Erro ao excluir GC. Tente novamente.')
+
+// Configuração global no App.tsx
+<Toaster position="top-right" />
+```
+
+### Padrões de UX
+
+#### Feedback Imediato
+
+- **Loading states** em todas as operações assíncronas
+- **Confirmações** para ações destrutivas
+- **Notificações** para feedback de sucesso/erro
+- **Estados vazios** informativos
+
+#### Acessibilidade
+
+- **ARIA labels** em componentes interativos
+- **Focus management** em modais
+- **Keyboard navigation** completa
+- **Screen reader** compatibility
+
+#### Responsividade
+
+- **Mobile first** approach
+- **Touch-friendly** interfaces
+- **Adaptive layouts** para diferentes telas
+- **Progressive enhancement**
+
+## 🆕 Atualizações Recentes
+
+### Versão 1.1.0 - Janeiro 2025
+
+#### ✨ Novas Funcionalidades
+
+- **Exclusão de GCs com Confirmação**
+
+  - Modal de confirmação obrigatória antes da exclusão
+  - Mensagem personalizada com nome do GC
+  - Loading state durante o processo
+  - Notificação de sucesso com toast
+  - Tratamento de erros robusto
+
+- **Sistema de Notificações Aprimorado**
+
+  - Integração completa do React Hot Toast
+  - Notificações de sucesso e erro contextualizadas
+  - Configuração global no App.tsx
+  - Posicionamento consistente (top-right)
+
+- **Melhorias de UX**
+  - Feedback visual imediato em todas as operações
+  - Estados de loading em botões críticos
+  - Confirmações para ações destrutivas
+  - Atualização automática de listas
+
+#### 🔧 Melhorias Técnicas
+
+- **Refatoração Completa do Código**
+
+  - Remoção de logs de debug
+  - Limpeza de código comentado
+  - Simplificação do tratamento de erros
+  - Padronização de componentes
+
+- **Documentação Atualizada**
+  - Seções reorganizadas e expandidas
+  - Exemplos de código atualizados
+  - Novos fluxos documentados
+  - Padrões de UX formalizados
+
+#### 🐛 Correções
+
+- **Compilação TypeScript**
+
+  - Correção de exports duplicados
+  - Validação de tipos aprimorada
+  - Build otimizado
+
+- **Gerenciamento de Estado**
+  - Sincronização melhorada entre componentes
+  - Fallbacks para casos de erro
+  - Prevenção de memory leaks
 
 ## 🚀 Setup e Instalação
 
@@ -438,9 +599,13 @@ vercel --prod
   "react-router-dom": "^6.22.3",
   "framer-motion": "^11.16.1",
   "react-hook-form": "^7.51.0",
+  "react-hot-toast": "^2.4.1",
+  "sonner": "^1.7.3",
   "zod": "^3.22.4",
   "leaflet": "^1.9.4",
-  "react-leaflet": "^4.2.1"
+  "react-leaflet": "^4.2.1",
+  "lucide-react": "^0.344.0",
+  "styled-components": "^6.1.8"
 }
 ```
 
@@ -451,9 +616,19 @@ vercel --prod
   "@vitejs/plugin-react": "^4.3.1",
   "typescript": "^5.5.3",
   "sass": "^1.83.0",
-  "eslint": "^8.57.0"
+  "eslint": "^8.57.0",
+  "@types/react": "^18.3.3",
+  "@types/react-dom": "^18.3.0"
 }
 ```
+
+### Bibliotecas de Destaque
+
+- **react-hot-toast**: Sistema de notificações elegante e acessível
+- **sonner**: Biblioteca alternativa de toast (backup)
+- **lucide-react**: Ícones modernos e consistentes
+- **framer-motion**: Animações fluidas e performáticas
+- **styled-components**: CSS-in-JS com TypeScript
 
 ## 🐛 Solução de Problemas
 
@@ -527,4 +702,25 @@ Para suporte técnico ou dúvidas sobre o sistema:
 ---
 
 _Documentação atualizada em: Janeiro 2025_
-_Versão do Sistema: 1.0.0_
+_Versão do Sistema: 1.1.0_
+_Última atualização: 25/01/2025_
+
+### 📋 Changelog
+
+#### v1.1.0 (25/01/2025)
+
+- ✨ **Nova**: Funcionalidade de exclusão de GCs com confirmação
+- ✨ **Nova**: Sistema de notificações toast integrado
+- 🔧 **Melhoria**: Refatoração completa do código
+- 🔧 **Melhoria**: UX aprimorada com feedback visual
+- 📚 **Docs**: Documentação completamente atualizada
+- 🐛 **Fix**: Correções de compilação TypeScript
+
+#### v1.0.0 (Janeiro 2025)
+
+- 🎉 **Lançamento**: Versão inicial do sistema
+- ✨ **Feature**: Cadastro completo de membros
+- ✨ **Feature**: Gestão de GCs (CRUD básico)
+- ✨ **Feature**: Dashboard administrativo
+- ✨ **Feature**: Sistema de mapas
+- ✨ **Feature**: Autenticação com Supabase

@@ -26,6 +26,8 @@ npm run build
 - **Maps**: Leaflet + React Leaflet
 - **Animations**: Framer Motion
 - **Forms**: React Hook Form + Zod
+- **Notifications**: React Hot Toast + Sonner
+- **Icons**: Lucide React + React Icons
 
 ## 📋 Funcionalidades
 
@@ -34,19 +36,23 @@ npm run build
 - [x] Sistema de autenticação (Supabase Auth)
 - [x] Cadastro de membros com upload de documentos
 - [x] Gestão completa de GCs (CRUD)
+- [x] **Exclusão de GCs com confirmação obrigatória**
+- [x] **Sistema de notificações toast**
 - [x] Dashboard administrativo
 - [x] Mapa interativo de GCs
 - [x] Sistema de busca por GCs próximos
 - [x] Responsividade completa
 - [x] Validação de formulários
 - [x] Compressão automática de imagens
+- [x] **Feedback visual em tempo real**
+- [x] **UX aprimorada com loading states**
 
 ### 🔄 Em Desenvolvimento
 
 - [ ] Relatórios avançados
-- [ ] Sistema de notificações
 - [ ] API para integração externa
 - [ ] Testes automatizados
+- [ ] Sistema de backup automático
 
 ## 🌐 Estrutura
 
@@ -153,7 +159,21 @@ Para documentação completa, consulte [DOCUMENTATION.md](./DOCUMENTATION.md):
 
 Projeto de uso interno da Igreja Batista Lagoinha de Guarulhos.
 
+## 🆕 Atualizações Recentes
+
+### v1.1.0 - Janeiro 2025
+
+- ✨ **Nova**: Exclusão de GCs com confirmação obrigatória
+- ✨ **Nova**: Sistema de notificações toast integrado
+- 🔧 **Melhoria**: UX aprimorada com feedback visual
+- 🔧 **Melhoria**: Refatoração completa do código
+- 📚 **Docs**: Documentação atualizada e expandida
+
+Para ver o changelog completo, consulte [DOCUMENTATION.md](./DOCUMENTATION.md).
+
 ---
+
+_Última atualização: 25/01/2025 | Versão: 1.1.0_
 
 **Versão**: 1.0.0  
 **Última atualização**: Janeiro 2025
