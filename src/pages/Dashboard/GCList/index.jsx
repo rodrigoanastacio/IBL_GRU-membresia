@@ -122,7 +122,10 @@ export const GCList = () => {
                   animate={{ opacity: 1 }}
                 >
                   <td>{gc.title}</td>
-                  <td>{gc.leader_name}</td>
+                  <td>
+                    {gc.leader_name}{' '}
+                    {gc.co_leader_name && `e ${gc.co_leader_name}`}
+                  </td>
                   <td>
                     {gc.weekday} às {gc.time}
                   </td>
