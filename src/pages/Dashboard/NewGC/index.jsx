@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import toast from 'react-hot-toast'
 import { PhoneInput } from '../../../components/PhoneInput'
 import { createGC } from '../../../services/gc'
 import { MessageModal } from '../../../components/MessageModal'
@@ -69,6 +70,11 @@ export const NewGC = ({ onClose, onSuccess }) => {
       const result = await createGC(gcData)
       setSuccess(true)
 
+      // Mostrar notificação de sucesso
+      toast.success(`GC "${gcData.title}" foi criado com sucesso!`, {
+        duration: 4000
+      })
+
       // Aguardar um pouco para mostrar a mensagem de sucesso
       setTimeout(() => {
         if (onSuccess) onSuccess(result)
@@ -76,6 +82,8 @@ export const NewGC = ({ onClose, onSuccess }) => {
       }, 1500)
     } catch (err) {
       setError(err.message || 'Erro ao criar GC. Tente novamente.')
+      // Mostrar notificação de erro
+      toast.error(err.message || 'Erro ao criar GC. Tente novamente.')
     } finally {
       setLoading(false)
     }
