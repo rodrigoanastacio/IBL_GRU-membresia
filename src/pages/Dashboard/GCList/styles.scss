@@ -91,14 +91,32 @@
   &__button {
     padding: 0.5rem 1rem;
     background: #fece00;
-    border: none;
+    border: 1px solid #fece00;
     border-radius: 4px;
     color: #362a25;
     cursor: pointer;
-    transition: all 0.2s;
+
+    &:focus-visible {
+      outline: 2px solid #fece00;
+      outline-offset: 2px;
+    }
 
     &:hover {
       opacity: 0.9;
+    }
+
+    &+.p-gc-list__button {
+      margin-left: 0.5rem;
+    }
+
+    &--delete {
+      background: #f8f9fa;
+      border: 1px solid #d5acac;
+
+      &:focus-visible {
+        outline: 2px solid #ef4444;
+        outline-offset: 2px;
+      }
     }
   }
 }

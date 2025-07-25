@@ -1,28 +1,32 @@
-import { supabase } from "../lib/supabase";
+import { supabase } from '../lib/supabase'
+
+/**
+ * Serviço para gerenciar operações CRUD de Grupos Conectados (GCs)
+ */
 
 /**
  * Interface que define a estrutura de um GC
  */
 export interface GC {
-  id?: string;
-  title: string;
-  leader_name: string;
-  leader_contact: string;
-  contact: string;
-  co_leader_name?: string;
-  co_leader_contact?: string;
-  weekday: string;
-  time: string;
-  is_online: boolean;
-  is_couple: boolean;
-  address?: string;
-  street?: string;
-  number?: string;
-  neighborhood?: string;
-  city?: string;
-  state?: string;
-  country?: string;
-  created_at?: string;
+  id?: string
+  title: string
+  leader_name: string
+  leader_contact: string
+  contact: string
+  co_leader_name?: string
+  co_leader_contact?: string
+  weekday: string
+  time: string
+  is_online: boolean
+  is_couple: boolean
+  address?: string
+  street?: string
+  number?: string
+  neighborhood?: string
+  city?: string
+  state?: string
+  country?: string
+  created_at?: string
 }
 
 /**
@@ -30,45 +34,42 @@ export interface GC {
  * @param gcData Dados do GC a ser criado
  * @returns O GC criado ou null em caso de erro
  */
-export async function createGC(gcData: Omit<GC, "id" | "created_at">) {
+export async function createGC(gcData: Omit<GC, 'id' | 'created_at'>) {
   try {
-    const { data, error } = await supabase
-      .from("gcs")
-      .insert([gcData])
-      .select();
+    const { data, error } = await supabase.from('gcs').insert([gcData]).select()
 
     if (error) {
-      console.error("❌ Erro ao criar GC:", error);
-      throw error;
+      throw error
     }
 
-    return data[0];
+    if (!data || data.length === 0) {
+      throw new Error('Não foi possível criar o GC')
+    }
+
+    return data[0]
   } catch (error) {
-    console.error("❌ Erro ao processar criação de GC:", error);
-    throw error;
+    throw error
   }
 }
 
 /**
- * Busca todos os GCs
- * @returns Lista de GCs
+ * Busca todos os GCs ativos
+ * @returns Promise<GC[]> Lista de GCs ordenados por data de criação
  */
 export async function getGCs() {
   try {
     const { data, error } = await supabase
-      .from("gcs")
-      .select("*")
-      .order("created_at", { ascending: false });
+      .from('gcs')
+      .select('*')
+      .order('created_at', { ascending: false })
 
     if (error) {
-      console.error("❌ Erro ao buscar GCs:", error);
-      throw error;
+      throw error
     }
 
-    return data || [];
+    return data || []
   } catch (error) {
-    console.error("❌ Erro ao processar busca de GCs:", error);
-    throw error;
+    throw error
   }
 }
 
@@ -80,20 +81,18 @@ export async function getGCs() {
 export async function getGCById(id: string) {
   try {
     const { data, error } = await supabase
-      .from("gcs")
-      .select("*")
-      .eq("id", id)
-      .single();
+      .from('gcs')
+      .select('*')
+      .eq('id', id)
+      .single()
 
     if (error) {
-      console.error("❌ Erro ao buscar GC:", error);
-      throw error;
+      throw error
     }
 
-    return data;
+    return data
   } catch (error) {
-    console.error("❌ Erro ao processar busca de GC:", error);
-    throw error;
+    throw error
   }
 }
 
@@ -101,25 +100,38 @@ export async function getGCById(id: string) {
  * Atualiza um GC existente
  * @param id ID do GC a ser atualizado
  * @param gcData Novos dados do GC
- * @returns O GC atualizado ou null
+ * @returns O GC atualizado
  */
 export async function updateGC(id: string, gcData: Partial<GC>) {
   try {
     const { data, error } = await supabase
-      .from("gcs")
+      .from('gcs')
       .update(gcData)
-      .eq("id", id)
-      .select();
+      .eq('id', id)
+      .select('*')
 
     if (error) {
-      console.error("❌ Erro ao atualizar GC:", error);
-      throw error;
+      throw error
     }
 
-    return data[0];
+    if (!data || data.length === 0) {
+      // Fallback: buscar o registro atualizado
+      const { data: updatedRecord, error: fetchError } = await supabase
+        .from('gcs')
+        .select('*')
+        .eq('id', id)
+        .single()
+
+      if (fetchError) {
+        throw new Error(`Erro ao buscar GC atualizado: ${fetchError.message}`)
+      }
+
+      return updatedRecord
+    }
+
+    return data[0]
   } catch (error) {
-    console.error("❌ Erro ao processar atualização de GC:", error);
-    throw error;
+    throw error
   }
 }
 
@@ -130,16 +142,14 @@ export async function updateGC(id: string, gcData: Partial<GC>) {
  */
 export async function deleteGC(id: string) {
   try {
-    const { error } = await supabase.from("gcs").delete().eq("id", id);
+    const { error } = await supabase.from('gcs').delete().eq('id', id)
 
     if (error) {
-      console.error("❌ Erro ao deletar GC:", error);
-      throw error;
+      throw error
     }
 
-    return true;
+    return true
   } catch (error) {
-    console.error("❌ Erro ao processar deleção de GC:", error);
-    throw error;
+    throw error
   }
 }

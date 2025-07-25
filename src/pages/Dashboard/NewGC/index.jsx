@@ -1,43 +1,43 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { PhoneInput } from "../../../components/PhoneInput";
-import { createGC } from "../../../services/gc";
-import { MessageModal } from "../../../components/MessageModal";
-import "./styles.scss";
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { PhoneInput } from '../../../components/PhoneInput'
+import { createGC } from '../../../services/gc'
+import { MessageModal } from '../../../components/MessageModal'
+import './styles.scss'
 
 export const NewGC = ({ onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
-    title: "",
-    leaders: "", // Isso será mapeado para leader_name no backend
-    leader_contact: "", // Campo de contato do líder principal (nome correto conforme Supabase)
-    co_leader_name: "", // Nome do co-líder (com underscore para combinar com o Supabase)
-    co_leader_contact: "", // Contato do co-líder (com underscore para combinar com o Supabase)
-    weekday: "",
-    time: "",
+    title: '',
+    leaders: '', // Isso será mapeado para leader_name no backend
+    leader_contact: '', // Campo de contato do líder principal (nome correto conforme Supabase)
+    co_leader_name: '', // Nome do co-líder (com underscore para combinar com o Supabase)
+    co_leader_contact: '', // Contato do co-líder (com underscore para combinar com o Supabase)
+    weekday: '',
+    time: '',
     is_online: false,
     is_couple: false,
     addressDetails: {
-      street: "",
-      number: "",
-      neighborhood: "",
-      city: "Guarulhos",
-      state: "SP",
-      country: "Brasil",
-    },
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
+      street: '',
+      number: '',
+      neighborhood: '',
+      city: 'Guarulhos',
+      state: 'SP',
+      country: 'Brasil'
+    }
+  })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(false)
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
+    e.preventDefault()
+    setLoading(true)
+    setError(null)
 
     try {
       const fullAddress = !formData.is_online
         ? `${formData.addressDetails.number}, ${formData.addressDetails.street}, ${formData.addressDetails.neighborhood}, ${formData.addressDetails.city}, ${formData.addressDetails.state}, ${formData.addressDetails.country}`
-        : null;
+        : null
 
       // Preparar dados para o formato da tabela no Supabase
       const gcData = {
@@ -56,55 +56,49 @@ export const NewGC = ({ onClose, onSuccess }) => {
         is_couple: formData.is_couple,
         address: fullAddress,
         // Sempre incluir campos de endereço, mesmo para GCs online
-        street: formData.is_online ? "N/A" : formData.addressDetails.street,
-        number: formData.is_online ? "N/A" : formData.addressDetails.number,
+        street: formData.is_online ? 'N/A' : formData.addressDetails.street,
+        number: formData.is_online ? 'N/A' : formData.addressDetails.number,
         neighborhood: formData.is_online
-          ? "N/A"
+          ? 'N/A'
           : formData.addressDetails.neighborhood,
-        city: formData.is_online ? "Guarulhos" : formData.addressDetails.city,
-        state: formData.is_online ? "SP" : formData.addressDetails.state,
-        country: formData.is_online
-          ? "Brasil"
-          : formData.addressDetails.country,
-      };
+        city: formData.is_online ? 'Guarulhos' : formData.addressDetails.city,
+        state: formData.is_online ? 'SP' : formData.addressDetails.state,
+        country: formData.is_online ? 'Brasil' : formData.addressDetails.country
+      }
 
-      console.log("Enviando dados para criação:", gcData);
-      const result = await createGC(gcData);
-
-      console.log("GC criado com sucesso:", result);
-      setSuccess(true);
+      const result = await createGC(gcData)
+      setSuccess(true)
 
       // Aguardar um pouco para mostrar a mensagem de sucesso
       setTimeout(() => {
-        if (onSuccess) onSuccess(result);
-        onClose();
-      }, 1500);
+        if (onSuccess) onSuccess(result)
+        onClose()
+      }, 1500)
     } catch (err) {
-      console.error("Erro ao criar GC:", err);
-      setError(err.message || "Erro ao criar GC. Tente novamente.");
+      setError(err.message || 'Erro ao criar GC. Tente novamente.')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    if (name.startsWith("address.")) {
-      const addressField = name.split(".")[1];
+    const { name, value, type, checked } = e.target
+    if (name.startsWith('address.')) {
+      const addressField = name.split('.')[1]
       setFormData((prev) => ({
         ...prev,
         addressDetails: {
           ...prev.addressDetails,
-          [addressField]: value,
-        },
-      }));
+          [addressField]: value
+        }
+      }))
     } else {
       setFormData((prev) => ({
         ...prev,
-        [name]: type === "checkbox" ? checked : value,
-      }));
+        [name]: type === 'checkbox' ? checked : value
+      }))
     }
-  };
+  }
 
   return (
     <div className="p-new-gc">
@@ -149,7 +143,7 @@ export const NewGC = ({ onClose, onSuccess }) => {
             <PhoneInput
               id="leader_contact"
               name="leader_contact"
-              value={formData.leader_contact || ""}
+              value={formData.leader_contact || ''}
               onChange={handleChange}
               required
             />
@@ -171,7 +165,7 @@ export const NewGC = ({ onClose, onSuccess }) => {
             <PhoneInput
               id="co_leader_contact"
               name="co_leader_contact"
-              value={formData.co_leader_contact || ""}
+              value={formData.co_leader_contact || ''}
               onChange={handleChange}
             />
           </div>
@@ -238,7 +232,7 @@ export const NewGC = ({ onClose, onSuccess }) => {
             <motion.fieldset
               className="p-new-gc__address"
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
+              animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
             >
@@ -295,10 +289,10 @@ export const NewGC = ({ onClose, onSuccess }) => {
             Cancelar
           </button>
           <button type="submit" className="p-new-gc__submit" disabled={loading}>
-            {loading ? "Criando..." : "Criar GC"}
+            {loading ? 'Criando...' : 'Criar GC'}
           </button>
         </div>
       </form>
     </div>
-  );
-};
+  )
+}
