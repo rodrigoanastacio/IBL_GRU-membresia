@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { RiAddLine } from 'react-icons/ri'
+import toast from 'react-hot-toast'
 import { SearchFilter } from '../../../components/SearchFilter'
 import { Modal } from '../../../components/Modal'
+import { ConfirmationModal } from '../../../components/ConfirmationModal'
 import { EditGC } from '../EditGC'
 import { NewGC } from '../NewGC'
-import { getGCs } from '../../../services/gc'
+import { getGCs, deleteGC } from '../../../services/gc'
 import './styles.scss'
 
 export const GCList = () => {
@@ -15,6 +17,8 @@ export const GCList = () => {
   const [gcList, setGcList] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [gcToDelete, setGcToDelete] = useState(null)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
     loadGCs()
@@ -73,6 +77,42 @@ export const GCList = () => {
     setGcList((prev) =>
       prev.map((gc) => (gc.id === updatedGC.id ? updatedGC : gc))
     )
+  }
+
+  const handleDelete = (gc) => {
+    setGcToDelete(gc)
+  }
+
+  const handleDeleteGC = async () => {
+    if (!gcToDelete) return
+
+    try {
+      setIsDeleting(true)
+      const success = await deleteGC(gcToDelete.id)
+
+      if (success) {
+        // Atualizar a lista localmente removendo o GC
+        setGcList((prev) => prev.filter((gc) => gc.id !== gcToDelete.id))
+
+        // Mostrar notificação de sucesso
+        toast.success(`GC "${gcToDelete.title}" foi excluído com sucesso!`, {
+          duration: 4000
+        })
+
+        setGcToDelete(null)
+
+        // Recarregar a lista do servidor como backup
+        await loadGCs()
+      }
+    } catch (error) {
+      console.error('Erro ao excluir GC:', error)
+      toast.error('Erro ao excluir GC. Tente novamente.')
+      // Em caso de erro, recarregar a lista
+      await loadGCs()
+    } finally {
+      setIsDeleting(false)
+      setGcToDelete(null)
+    }
   }
 
   return (
@@ -137,6 +177,12 @@ export const GCList = () => {
                     >
                       Editar
                     </button>
+                    <button
+                      className="p-gc-list__button p-gc-list__button--delete"
+                      onClick={() => handleDelete(gc)}
+                    >
+                      Excluir
+                    </button>
                   </td>
                 </motion.tr>
               ))}
@@ -164,6 +210,17 @@ export const GCList = () => {
       >
         <NewGC onClose={handleCloseNewModal} onSuccess={handleGCCreated} />
       </Modal>
+
+      <ConfirmationModal
+        isOpen={!!gcToDelete}
+        title="Excluir GC"
+        message={`Tem certeza que deseja excluir o GC "${gcToDelete?.title}"? Esta ação não poderá ser desfeita.`}
+        confirmLabel="Excluir"
+        cancelLabel="Cancelar"
+        onConfirm={handleDeleteGC}
+        onCancel={() => setGcToDelete(null)}
+        isLoading={isDeleting}
+      />
     </div>
   )
 }
