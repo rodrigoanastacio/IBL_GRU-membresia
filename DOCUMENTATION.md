@@ -420,7 +420,154 @@ toast.error('Erro ao excluir GC. Tente novamente.')
   - Fallbacks para casos de erro
   - Prevenção de memory leaks
 
-## 🚀 Setup e Instalação
+## �️ Roadmap e Funcionalidades Futuras
+
+### 📈 Versão 1.2.0 - Analytics e Relatórios (Março 2025)
+
+#### Dashboard Avançado
+
+```typescript
+interface DashboardMetrics {
+  totalMembers: number
+  newMembersThisMonth: number
+  activeGCs: number
+  growthRate: number
+  engagementScore: number
+}
+
+// Componentes planejados
+;-MembersGrowthChart - GCEngagementMetrics - ConversionFunnel - ActivityHeatmap
+```
+
+#### Sistema de Relatórios
+
+- **Relatórios Personalizáveis**: Builder visual de relatórios
+- **Agendamento**: Envio automático de relatórios por email
+- **Exportação Avançada**: PDF com gráficos, Excel dinâmico
+- **Filtros Inteligentes**: Por período, idade, bairro, GC
+
+### 🔐 Versão 1.3.0 - Segurança e Auditoria (Maio 2025)
+
+#### Sistema de Permissões
+
+```typescript
+enum UserRole {
+  SUPER_ADMIN = 'super_admin',
+  ADMIN = 'admin',
+  PASTOR = 'pastor',
+  LEADER = 'leader',
+  VIEWER = 'viewer'
+}
+
+interface Permission {
+  resource: string
+  actions: ('create' | 'read' | 'update' | 'delete')[]
+  conditions?: Record<string, any>
+}
+```
+
+#### Auditoria Completa
+
+- **Log de Ações**: Todas as operações CRUD registradas
+- **Histórico de Alterações**: Timeline de mudanças por registro
+- **Backup Incremental**: Versionamento automático com rollback
+- **Compliance**: Relatórios para auditoria interna
+
+### 📱 Versão 1.4.0 - Mobile e PWA (Julho 2025)
+
+#### Progressive Web App
+
+```typescript
+// Service Worker para cache offline
+interface PWAFeatures {
+  offlineSupport: boolean
+  pushNotifications: boolean
+  backgroundSync: boolean
+  installPrompt: boolean
+}
+```
+
+#### App Mobile Nativo (React Native)
+
+- **Sincronização Offline**: CRUD local com sync automático
+- **Notificações Push**: Lembretes e atualizações importantes
+- **Scanner QR**: Check-in rápido em eventos
+- **Geofencing**: Notificações por proximidade de GC
+
+### 🔄 Versão 2.0.0 - Plataforma Completa (Setembro 2025)
+
+#### Multi-Tenancy
+
+```typescript
+interface TenantConfig {
+  id: string
+  name: string
+  domain: string
+  customization: ThemeConfig
+  features: FeatureFlags
+  billing: BillingPlan
+}
+```
+
+#### Marketplace de Integrações
+
+- **API Pública**: RESTful e GraphQL
+- **Webhooks**: Eventos em tempo real
+- **SDK JavaScript**: Para desenvolvedores terceiros
+- **App Store**: Plugins e extensões da comunidade
+
+#### Funcionalidades Empresariais
+
+- **White Label**: Customização completa de marca
+- **SSO/SAML**: Integração com Active Directory
+- **API Rate Limiting**: Controle de uso por tenant
+- **Métricas Multitenancy**: Dashboard por organização
+
+### 🛠️ Melhorias Técnicas Contínuas
+
+#### Performance e Escalabilidade
+
+```typescript
+// Otimizações planejadas
+interface PerformanceTargets {
+  firstContentfulPaint: '< 1.5s'
+  largestContentfulPaint: '< 2.5s'
+  cumulativeLayoutShift: '< 0.1'
+  timeToInteractive: '< 3s'
+}
+```
+
+#### Qualidade de Código
+
+- **Cobertura de Testes**: Meta de 90%+ em todas as funcionalidades
+- **Documentação Automatizada**: Storybook para componentes
+- **Análise Estática**: SonarQube para qualidade contínua
+- **Performance Monitoring**: Sentry + Web Vitals
+
+#### DevOps e Infraestrutura
+
+- **CI/CD Avançado**: Deploy por ambiente com aprovações
+- **Monitoramento**: Grafana + Prometheus + Alertas
+- **Backup Geográfico**: Replicação multi-região
+- **Disaster Recovery**: RTO < 1h, RPO < 15min
+
+### 🎯 Objetivos de Longo Prazo
+
+#### Impacto na Igreja
+
+- **Crescimento**: Facilitar crescimento de 20% ao ano
+- **Engajamento**: Aumentar participação em GCs em 30%
+- **Eficiência**: Reduzir tempo administrativo em 50%
+- **Dados**: Decisões baseadas em dados precisos
+
+#### Expansão Estratégica
+
+- **Rede IBL**: Implementação em todas as unidades
+- **Outras Denominações**: Adaptação para diferentes contextos
+- **Internacional**: Suporte a múltiplos idiomas
+- **Franchising**: Modelo de licenciamento para outras igrejas
+
+## �🚀 Setup e Instalação
 
 ### Pré-requisitos
 
