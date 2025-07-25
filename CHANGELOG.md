@@ -5,6 +5,40 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+## [Não Lançado] - Próximas Versões
+
+### [2.0.0] - Em Planejamento (Set 2025) - Plataforma Multi-Tenant
+
+- ✨ **Multi-tenancy**: Suporte para múltiplas organizações
+- ✨ **API Pública**: RESTful e GraphQL completas
+- ✨ **Marketplace**: Sistema de plugins e integrações
+- ✨ **White Label**: Customização completa de marca
+- 🔒 **SSO/SAML**: Integração corporativa
+
+### [1.4.0] - Em Planejamento (Jul 2025) - Mobile & PWA
+
+- ✨ **Progressive Web App**: Cache offline e instalação
+- ✨ **App React Native**: Aplicativo móvel nativo
+- 🔔 **Push Notifications**: Notificações em tempo real
+- 📱 **Scanner QR**: Check-in rápido em eventos
+- 🗺️ **Geofencing**: Notificações por proximidade
+
+### [1.3.0] - Em Planejamento (Mai 2025) - Segurança Avançada
+
+- 🔐 **Sistema de Permissões**: Controle granular de acesso
+- 📋 **Log de Auditoria**: Rastreamento completo de ações
+- 🔄 **Backup Incremental**: Versionamento com rollback
+- 🛡️ **2FA**: Autenticação de dois fatores
+- 📊 **Compliance**: Relatórios para auditoria
+
+### [1.2.0] - Em Planejamento (Mar 2025) - Analytics & Relatórios
+
+- 📊 **Dashboard Avançado**: Métricas e KPIs detalhados
+- 📈 **Relatórios Personalizáveis**: Builder visual de relatórios
+- 📧 **Agendamento**: Envio automático por email
+- 📋 **Exportação Avançada**: PDF, Excel com gráficos
+- 🎯 **Filtros Inteligentes**: Segmentação avançada
+
 ## [1.1.0] - 2025-01-25
 
 ### ✨ Adicionado
