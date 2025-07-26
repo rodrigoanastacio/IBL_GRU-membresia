@@ -37,7 +37,7 @@ npm run build
 - [x] Cadastro de membros com upload de documentos
 - [x] Gestão completa de GCs (CRUD)
 - [x] **Exclusão de GCs com confirmação obrigatória**
-- [x] **Sistema de notificações toast**
+- [x] **Sistema de notificações toast** (criação, edição, exclusão)
 - [x] Dashboard administrativo
 - [x] Mapa interativo de GCs
 - [x] Sistema de busca por GCs próximos
@@ -211,6 +211,12 @@ Para documentação completa, consulte [DOCUMENTATION.md](./DOCUMENTATION.md):
 Projeto de uso interno da Igreja Batista Lagoinha de Guarulhos.
 
 ## 🆕 Atualizações Recentes
+
+### v1.1.1 - Janeiro 2025
+
+- ✨ **Nova**: Notificações toast para criação e edição de GCs
+- 🔧 **Melhoria**: Feedback completo em todas operações CRUD
+- 📚 **Docs**: Fluxos de GCs documentados detalhadamente
 
 ### v1.1.0 - Janeiro 2025
 

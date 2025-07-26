@@ -180,6 +180,26 @@ model RegistroDecisao {
   - **Validação** de horários e conflitos
   - **Notificações** toast para feedback do usuário
 
+#### Fluxo de Criação de GCs
+
+1. **Clique no botão "Novo GC"** na página de listagem
+2. **Preenchimento do formulário** com validação em tempo real
+3. **Validação de campos obrigatórios** antes do envio
+4. **Loading state** durante criação no banco de dados
+5. **Notificação de sucesso** com toast: `GC "{nome}" foi criado com sucesso!`
+6. **Fechamento automático** do modal após 1.5s
+7. **Atualização da lista** com o novo GC
+
+#### Fluxo de Edição de GCs
+
+1. **Clique no botão "Editar"** na linha do GC desejado
+2. **Carregamento dos dados** existentes no formulário
+3. **Edição dos campos** com validação contínua
+4. **Loading state** durante atualização
+5. **Notificação de sucesso** com toast: `GC "{nome}" foi atualizado com sucesso!`
+6. **Sincronização automática** com a lista
+7. **Fallback robusto** em caso de erro de sincronização
+
 #### Fluxo de Exclusão de GCs
 
 1. **Clique no botão "Excluir"** na linha do GC
@@ -329,18 +349,37 @@ Implementação de notificações elegantes e acessíveis:
 ```typescript
 import toast from 'react-hot-toast'
 
-// Notificações de sucesso
-toast.success('GC "Nome do GC" foi excluído com sucesso!', {
+// Notificações de sucesso - Operações CRUD de GCs
+toast.success('GC "Nome do GC" foi criado com sucesso!', {
   duration: 4000,
   position: 'top-right'
 })
 
+toast.success('GC "Nome do GC" foi atualizado com sucesso!', {
+  duration: 4000,
+})
+
+toast.success('GC "Nome do GC" foi excluído com sucesso!', {
+  duration: 4000,
+})
+
 // Notificações de erro
+toast.error('Erro ao criar GC. Tente novamente.')
+toast.error('Erro ao atualizar GC. Tente novamente.')
 toast.error('Erro ao excluir GC. Tente novamente.')
 
 // Configuração global no App.tsx
 <Toaster position="top-right" />
 ```
+
+#### Contextos de Uso das Notificações
+
+- **Criação de GCs**: Sucesso após `createGC()` bem-sucedido
+- **Edição de GCs**: Sucesso após `updateGC()` bem-sucedido
+- **Exclusão de GCs**: Sucesso após `deleteGC()` bem-sucedido
+- **Cadastro de Membros**: Sucesso após `createMember()` bem-sucedido
+- **Autenticação**: Login/logout com feedback apropriado
+- **Erros de Validação**: Feedback imediato em formulários
 
 ### Padrões de UX
 
