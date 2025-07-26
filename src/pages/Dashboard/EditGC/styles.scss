@@ -17,7 +17,7 @@
     label {
       display: block;
       margin-bottom: 0.5rem;
-      color: #64748b;
+      color: #1e2126;
     }
 
     input,
@@ -27,6 +27,7 @@
       border: 1px solid #e3e9f0;
       border-radius: 4px;
       font-family: inherit;
+      color: #64748b;
 
       &:focus {
         outline: none;

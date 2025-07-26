@@ -39,6 +39,26 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.
 - 📋 **Exportação Avançada**: PDF, Excel com gráficos
 - 🎯 **Filtros Inteligentes**: Segmentação avançada
 
+## [1.1.1] - 2025-01-25
+
+### ✨ Adicionado
+
+- **Notificações Toast para Criação de GCs**: Feedback de sucesso ao criar novo GC
+- **Notificações Toast para Edição de GCs**: Feedback de sucesso ao atualizar GC existente
+- **Tratamento de Erros Aprimorado**: Notificações de erro contextualizadas para operações CRUD
+
+### 🔧 Melhorado
+
+- **Experiência do Usuário**: Feedback imediato em todas as operações de GC
+- **Consistência**: Padrão unificado de notificações em todo sistema
+- **Documentação**: Fluxos de criação e edição detalhados
+
+### 📚 Documentação
+
+- **Fluxos de GCs**: Documentação completa dos fluxos de criação e edição
+- **Sistema de Notificações**: Exemplos expandidos de uso do React Hot Toast
+- **Contextos de Uso**: Mapeamento de todos os pontos de notificação
+
 ## [1.1.0] - 2025-01-25
 
 ### ✨ Adicionado
