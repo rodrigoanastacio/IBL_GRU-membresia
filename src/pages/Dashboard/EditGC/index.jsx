@@ -137,7 +137,7 @@ export const EditGC = ({ id, onClose, onSuccess }) => {
       const result = await updateGC(id, gcData)
       setSuccess(true)
 
-      // Mostrar notificação de sucesso
+      // Show success notification
       toast.success(`GC "${gcData.title}" foi atualizado com sucesso!`, {
         duration: 4000
       })
